@@ -1,0 +1,45 @@
+.navBar {
+    z-index: 10;
+    position: sticky;
+    top: 0px;
+    background: black;
+    height: 42px;
+    display: flex;
+    justify-content: space-between;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    font-size: 22px;
+    padding: 5px;
+    vertical-align: bottom
+}
+
+.logo{
+    font-size: 28px;
+    position: relative;
+    top: -4px;
+    margin: 0px 4px;
+    font-weight: bold;
+}
+
+.leftMenu {
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+
+.rightMenu {
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+
+.navBarItem {
+    color: white; 
+    margin-right: 8px;
+}
+
+.navBarItem:hover {
+    color: white; 
+    text-decoration: none;
+    text-shadow: white 0 0 4px;
+}

@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Blog.Helpers;
 using MyBlog.Data;
+using MyBlog.DomainLogic.Interfaces;
+using MyBlog.DomainLogic.Managers;
 
 namespace MyBlog.Web
 {
@@ -33,7 +35,7 @@ namespace MyBlog.Web
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "EventsObserver/build";
+                configuration.RootPath = "MyBlog/build";
             });
 
             services.AddAuthentication(x =>
@@ -58,6 +60,7 @@ namespace MyBlog.Web
 
             services.AddDbContext<IAppContext, MyAppContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IUserManager, UserManager>();
             services.AddSingleton<IWebHostEnvironment>(Environment);
         }
 

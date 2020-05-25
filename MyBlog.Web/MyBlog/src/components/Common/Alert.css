@@ -1,0 +1,7 @@
+.alert{
+    background-color: rgb(255, 128, 128);
+    border-radius: 8px;
+    padding: 8px;
+    margin: 8px auto 12px;
+    width: max-content;
+}
