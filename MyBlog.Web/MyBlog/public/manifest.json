@@ -1,6 +1,6 @@
 {
-  "short_name": "EventsObserver",
-  "name": "EventsObserver",
+  "short_name": "MyBlog",
+  "name": "MyBlog",
   "icons": [
     {
       "src": "favicon.ico",

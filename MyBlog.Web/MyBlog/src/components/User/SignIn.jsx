@@ -30,10 +30,6 @@ export default class SignUp extends Component {
             {this.state.errorMessage}
         </Alert> : null;
 
-        const signInStyle = {
-            maxWidth: '256px'
-        }
-
         return( 
             <>
             {errorBaner}
@@ -41,14 +37,14 @@ export default class SignUp extends Component {
                 <h2>Sign in</h2>  
                 <form className="formStyle">    
                     <div className="formGroup">
-                        <label for="login">Login</label>
+                        <label>Login</label>
                         <input required type="text" name="login" id="login" value={this.state.login} onChange={this.handleInputChange}/>
                     </div>
                     <div className="formGroup">
-                        <label for="password">Password</label>
+                        <label>Password</label>
                         <input required type="password" name="password" id="password" value={this.state.password} onChange={this.handleInputChange}/>
                     </div>
-                    <Button color="primary" onClick={() => this.logIn()}>Log in</Button>
+                    <Button color="primary" onClick={this.logIn}>Log in</Button>
                 </form>
             </div>
             </>
@@ -69,7 +65,7 @@ export default class SignUp extends Component {
         }).then((response) => {
             this.setState({error: !response.ok});
             return response.json();
-        }).then((data) => {
+        }).then((data) => { debugger;
             if (this.state.error){
                 this.setState({
                     errorMessage: data.message
@@ -77,7 +73,7 @@ export default class SignUp extends Component {
             }
             else {
                 AuthHelper.saveAuth(data.name, data.accessToken, data.role, data.login, data.password);
-                this.props.history.push("/posts");
+                this.props.history.push("/feed");
             }
         }).catch((ex) => {
             this.setState({

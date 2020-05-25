@@ -5,9 +5,11 @@ export default class Page404 extends Component
 {
     render(){
         return(
-            <div>
-                <p className="top">404</p>
-                <p className="body">Страница не найдена</p>
+            <div className="overlay404">
+                <div className="body404">
+                    <p className="top">404</p>
+                    <p className="body">Page not found</p>
+                </div>
             </div>
         )
     }
