@@ -1,0 +1,23 @@
+.formGroup{
+    margin-bottom: 8px;
+}
+
+label{
+    display: block;
+}
+
+input{
+    height: 32px;
+    border-radius: 4px;
+    padding-left: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+input:focus{
+    outline: none;
+    box-shadow: 0 0 2px inset rgba(0,0,0,0.5);
+}
+
+button{
+    margin: 8px 8px 0px 0px;
+}
