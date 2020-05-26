@@ -10,10 +10,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using Blog.Helpers;
+using MyBlog.Web.Helpers;
 using MyBlog.Data;
 using MyBlog.DomainLogic.Interfaces;
 using MyBlog.DomainLogic.Managers;
+using MyBlog.DomainLogic.Helpers;
+using AuthOptions = MyBlog.Web.Helpers.AuthOptions;
+using MyBlog.Web.Service;
 
 namespace MyBlog.Web
 {
@@ -58,9 +61,18 @@ namespace MyBlog.Web
                 };
             });
 
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.AddDbContext<IAppContext, MyAppContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IUserManager, UserManager>();
+            services.AddScoped<IPostManager, PostManager>();
+            services.AddScoped<IHostServices, HostServices>();
             services.AddSingleton<IWebHostEnvironment>(Environment);
         }
 

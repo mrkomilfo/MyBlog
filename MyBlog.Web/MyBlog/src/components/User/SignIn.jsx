@@ -33,9 +33,9 @@ export default class SignUp extends Component {
         return( 
             <>
             {errorBaner}
-            <div className="content">
+            <div className="form">
                 <h2>Sign in</h2>  
-                <form className="formStyle">    
+                <form className="formContent">    
                     <div className="formGroup">
                         <label>Login</label>
                         <input required type="text" name="login" id="login" value={this.state.login} onChange={this.handleInputChange}/>

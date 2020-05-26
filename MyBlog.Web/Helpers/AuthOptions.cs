@@ -1,13 +1,13 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Blog.Helpers
+namespace MyBlog.Web.Helpers
 {
     public class AuthOptions
     {
-		public const string ISSUER = "Blog";
+		public const string ISSUER = "MyBlog";
 		public const string AUDIENCE = "User";
-		const string KEY = "tokenKey";
+		const string KEY = "super_secret_security_key";
 		public const int LIFETIME = 60;
 		public static SymmetricSecurityKey GetSymmetricSecurityKey()
 		{

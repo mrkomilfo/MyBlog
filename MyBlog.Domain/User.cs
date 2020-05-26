@@ -20,8 +20,7 @@ namespace MyBlog.Domain
         public int? RoleId { get; set; }
         public Role Role { get; set; }
         public DateTime? UnlockTime { get; set; }
-        public string ContactEmail { get; set; }
-        public string ContactPhone { get; set; }
+        public string Email { get; set; }
         public DateTime RegistrationDate { get; set; }
         public ICollection<Post> Posts { get; set; }
         public ICollection<Comment> Comments { get; set; }

@@ -21,3 +21,13 @@ input:focus{
 button{
     margin: 8px 8px 0px 0px;
 }
+
+.form{
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255);
+    opacity: 0.9;
+    margin: 0px auto 12px;
+    padding: 12px;
+    width: max-content;
+}
