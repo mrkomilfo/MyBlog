@@ -1,6 +1,6 @@
 .btn {
     position: relative;
-    padding: 10px 15px;
+    padding: auto;
     background-color: #FF0;
     border: 1px solid rgba(0, 0, 0, 0.2);
     color: #000;
@@ -10,7 +10,7 @@
     display: inline-block;
     text-decoration: none;
     border-radius: 4px;
-    height: 42px;
+    height: 36px;
   }
   
   .btn:hover {

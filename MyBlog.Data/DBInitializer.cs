@@ -71,12 +71,16 @@ namespace MyBlog.Data
                 IEnumerable<Comment> comments = new List<Comment>()
                 {
                     new Comment{
-                        PostId = (int)posts.ElementAtOrDefault(0)?.Id, 
-                        AuthorId = context.Users.Where(u => string.Equals(u.Login, "admin")).Select(u => u.Id).FirstOrDefault() 
+                        Value = "Cool!",
+                        PostId = (int)posts.ElementAtOrDefault(0)?.Id,
+                        AuthorId = context.Users.Where(u => string.Equals(u.Login, "admin")).Select(u => u.Id).FirstOrDefault(),
+                        PublicationTime = DateTime.Now
                     },
                     new Comment{
+                        Value = "Awesome!",
                         PostId = (int)posts.ElementAtOrDefault(1)?.Id, 
-                        AuthorId = context.Users.Where(u => string.Equals(u.Login, "user")).Select(u => u.Id).FirstOrDefault() 
+                        AuthorId = context.Users.Where(u => string.Equals(u.Login, "user")).Select(u => u.Id).FirstOrDefault(),
+                        PublicationTime = DateTime.Now
                     }
                 };
                 context.Comments.AddRange(comments);

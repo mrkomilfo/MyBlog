@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using MyBlog.Domain;
+using MyBlog.DomainLogic.Models.Common;
 using MyBlog.DomainLogic.Models.User;
 
 namespace MyBlog.DomainLogic.Interfaces
@@ -9,6 +10,13 @@ namespace MyBlog.DomainLogic.Interfaces
     public interface IUserManager
     {
         Task<DateTime?> GetUnlockTime(int userId);
-        Task<LoginResponseDto> Login(LoginDto model);   
+        Task<LoginResponseDto> Login(LoginDto model);
+        Task<UserFullDto> GetUserAsync(int userId);
+        Task<Page<UserLiteDto>> GetUsersAsync(int index, int pageSize, string search);
+        Task<UserToUpdateDto> GetUserToUpdateAsync(int userId);
+        Task<UserToBanDto> GetUserToBanAsync(int userId);
+        Task<UserToChangeRoleDto> GetUserToChangeRoleAsync(int userId);
+        Task<IEnumerable<Role>> GetRolesAsync();
+        Task<Role> GetUserRoleAsync(int userId);
     }
 }
