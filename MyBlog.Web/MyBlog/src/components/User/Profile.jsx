@@ -26,7 +26,6 @@ export default class Profile extends Component {
             writedPosts: 0,
             photo: '',
             width: 0,
-            height: 0,
             myRole: AuthHelper.getRole(),
             myId: AuthHelper.getId()
         }
@@ -38,7 +37,7 @@ export default class Profile extends Component {
     }
 
     updateWindowDimensions() {
-        this.setState({ width: window.innerWidth, height: window.innerHeight });
+        this.setState({ width: window.innerWidth });
     }
 
     componentDidMount() {
@@ -114,7 +113,7 @@ export default class Profile extends Component {
                         <tbody>
                             <tr><td><b>Registration date:</b></td><td>{this.state.registrationDate}</td></tr>
                             <tr><td><b>Email:</b></td><td>{this.state.email}</td></tr>
-                            <tr><td><b>Writed posts:</b></td><td><Link to={`/feed?author=${this.state.id}`}>{this.state.writedPosts + (this.state.writedPosts > 1 ? " posts" : " post")}</Link></td></tr>
+                            <tr><td><b>Writed posts:</b></td><td><Link className="writedPosts" to={`/feed?author=${this.state.id}`}>{this.state.writedPosts + (this.state.writedPosts > 1 ? " posts" : " post")}</Link></td></tr>
                         </tbody>
                     </table>
                     {buttonPanel}

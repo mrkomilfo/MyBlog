@@ -1,13 +1,4 @@
-.modalOverlay {
-    background-color: rgba(0, 0, 0, 0.5);
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-  
-  .modalWindow {
+.modalWindow {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -20,18 +11,18 @@
     flex-direction: column;
     justify-content: space-between;   
     border-radius: 8px;
-  }
-  
-  .modalHeader,
-  .modalBody{
-    padding: 0px 20px;
-  }
+}
 
-  .modalFooter {
-    padding: 0px 20px 20px;
-  }
-  
-  .modalHeader {
+.modalHeader,
+.modalBody{
+    padding: 0px 20px;
+}
+
+.modalFooter {
+   padding: 0px 20px 20px;
+}
+
+.modalHeader {
     min-height: 60px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     display: flex;
@@ -39,18 +30,18 @@
     box-sizing: border-box;
     align-items: center;
     font-weight: bold;
-  }
-  
-  .modalTitle {
+}
+
+.modalTitle {
     font-weight: bold;
-  }
-  
-  .modalFooter {
+}
+
+.modalFooter {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-  }
-  
-  .modalFooter button:last-child {
+}
+
+.modalFooter button:last-child {
     margin-left: 10px;
-  }
+}

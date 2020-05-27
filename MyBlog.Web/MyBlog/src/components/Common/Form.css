@@ -6,16 +6,12 @@ label{
     display: block;
 }
 
-input{
+input,
+select{
     height: 32px;
     border-radius: 4px;
     padding: 0px 4px;
     border: 1px solid rgba(0, 0, 0, 0.2);
-}
-
-input:focus{
-    outline: none;
-    box-shadow: 0 0 2px inset rgba(0,0,0,0.5);
 }
 
 textarea{
@@ -25,7 +21,9 @@ textarea{
     border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-textarea:focus{
+input:focus,
+textarea:focus,
+select:focus{
     outline: none;
     box-shadow: 0 0 2px inset rgba(0,0,0,0.5);
 }

@@ -72,6 +72,7 @@ namespace MyBlog.Web
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<IPostManager, PostManager>();
+            services.AddScoped<ICategoryManager, CategoryManager>();
             services.AddScoped<IHostServices, HostServices>();
             services.AddSingleton<IWebHostEnvironment>(Environment);
         }
