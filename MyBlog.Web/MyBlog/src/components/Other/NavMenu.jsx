@@ -47,7 +47,7 @@ export default class NavMenu extends Component {
 
     updateWindowDimensions() {
         this.setState({ width: window.innerWidth, height: window.innerHeight });
-      }
+    }
 
     toggleNavbar () {
         this.setState({
