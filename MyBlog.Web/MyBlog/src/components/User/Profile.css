@@ -1,0 +1,57 @@
+.profile{
+    width: min(96%, 750px);
+    margin: auto;
+    display: flex;
+}
+
+.collapsed{
+    flex-wrap: wrap;
+}
+
+.profilePhoto{
+    object-fit: cover;
+    width: 100%;
+    min-width: 100px;
+}
+
+.profileData{
+    width: 100%;
+    margin-left: 16px;
+}
+
+.collapsed>.profileData{
+    margin-left: 0px;
+    margin-top: 8px;
+}
+
+.profileTable{
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.badge{
+    border-radius: 6px;
+    color: black;
+    padding: 3px 6px 6px;
+    margin-left: 8px;
+    font-weight: 500
+}
+
+.red{
+    background-color: rgb(255, 0, 0);
+}
+
+.green{
+    background-color: rgb(0, 255, 0);
+}
+
+.status{
+    font-size: 14px;
+    color: red;
+    font-weight: bold;
+}
+
+.profileButtonPanel{
+    justify-content: space-evenly;
+    display: flex;
+}
