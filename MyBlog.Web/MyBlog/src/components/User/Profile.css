@@ -55,3 +55,11 @@
     justify-content: space-evenly;
     display: flex;
 }
+
+.writedPosts{
+    color: grey;
+}
+
+.writedPosts:hover{
+    text-shadow: grey 0 0 1px;
+}

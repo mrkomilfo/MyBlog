@@ -36,13 +36,13 @@ namespace MyBlog.Data
                 IEnumerable<Post> posts = new List<Post>()
                 {
                     new Post()
-                    {
+                        {
                         Name = "First post",
-                        CategoryId = categories.ElementAtOrDefault(0)?.Id,
+                        CategoryId = categories.ElementAtOrDefault(1)?.Id,
                         ShortDescription = "Short description of first post",
                         Description = "Lorem ipsum dolor sit amet, sed at omnes tempor malorum, mei debet virtute phaedrum eu. Cu zril volutpat moderatius vim, ex his dico commodo prompta. Ludus aeterno nonumes eum te, libris periculis cu usu, eos cibo copiosae fabellas ad. Dolore efficiantur te eum, ceteros placerat concludaturque est in. Ne eros aliquam ponderum ius.",
-                        AuthorId = context.Users.Select(u => u.Id).FirstOrDefault(),
-                        PublicationTime = DateTime.Now,
+                        AuthorId = context.Users.Where(u => string.Equals(u.Login, "accountManager")).Select(u => u.Id).FirstOrDefault(),
+                        PublicationTime = DateTime.Now.AddDays(-2),
                         HasImage = true
                     },
                     new Post()
@@ -51,8 +51,19 @@ namespace MyBlog.Data
                         CategoryId = categories.ElementAtOrDefault(0)?.Id,
                         ShortDescription = "Short description of second post",
                         Description = "Mel causae hendrerit in. No clita civibus vix, sed ex sententiae elaboraret. Integre ornatus usu in. Et saperet laoreet vel, eu ius tation apeirian voluptaria. Pri discere scripserit eu. Offendit suscipit qui no, ut usu essent vidisse fastidii. At sed amet euismod habemus.",
-                        AuthorId = context.Users.Select(u => u.Id).FirstOrDefault(),
+                        AuthorId = context.Users.Where(u => string.Equals(u.Login, "user")).Select(u => u.Id).FirstOrDefault(),
+                        PublicationTime = DateTime.Now.AddDays(-1),
+                        HasImage = true
+                    },
+                    new Post()
+                    {
+                        Name = "Third post",
+                        CategoryId = categories.ElementAtOrDefault(2)?.Id,
+                        ShortDescription = "Short description of third post",
+                        Description = "Suspendisse porta nisi augue, quis mattis odio iaculis nec. Pellentesque tristique tempus turpis. Cras orci mauris, fermentum non tempus vitae, feugiat quis turpis. Integer sed turpis id magna egestas dignissim. Cras eros ipsum, dictum vehicula dictum ut, sagittis at erat. Vivamus id posuere lorem. Donec aliquet massa ac nibh consequat vulputate.",
+                        AuthorId = context.Users.Where(u => string.Equals(u.Login, "admin")).Select(u => u.Id).FirstOrDefault(),
                         PublicationTime = DateTime.Now,
+                        HasImage = true
                     }
                 };
                 await context.Posts.AddRangeAsync(posts);
@@ -64,6 +75,8 @@ namespace MyBlog.Data
                     new PostsTags{PostId = (int)posts.ElementAtOrDefault(0)?.Id, TagId = (int)tags.ElementAtOrDefault(1)?.Id},
                     new PostsTags{PostId = (int)posts.ElementAtOrDefault(1)?.Id, TagId = (int)tags.ElementAtOrDefault(2)?.Id},
                     new PostsTags{PostId = (int)posts.ElementAtOrDefault(1)?.Id, TagId = (int)tags.ElementAtOrDefault(3)?.Id},
+                    new PostsTags{PostId = (int)posts.ElementAtOrDefault(2)?.Id, TagId = (int)tags.ElementAtOrDefault(1)?.Id},
+                    new PostsTags{PostId = (int)posts.ElementAtOrDefault(2)?.Id, TagId = (int)tags.ElementAtOrDefault(2)?.Id},
                 };
                 context.PostsTags.AddRange(postTags);
                 await context.SaveChangesAsync(default);
@@ -74,14 +87,21 @@ namespace MyBlog.Data
                         Value = "Cool!",
                         PostId = (int)posts.ElementAtOrDefault(0)?.Id,
                         AuthorId = context.Users.Where(u => string.Equals(u.Login, "admin")).Select(u => u.Id).FirstOrDefault(),
-                        PublicationTime = DateTime.Now
+                        PublicationTime = DateTime.Now.AddDays(-1)
                     },
                     new Comment{
                         Value = "Awesome!",
                         PostId = (int)posts.ElementAtOrDefault(1)?.Id, 
+                        AuthorId = context.Users.Where(u => string.Equals(u.Login, "accountManager")).Select(u => u.Id).FirstOrDefault(),
+                        PublicationTime = DateTime.Now.AddHours(-1)
+                    },
+                    new Comment{
+                        Value = "Amazing!",
+                        PostId = (int)posts.ElementAtOrDefault(2)?.Id,
                         AuthorId = context.Users.Where(u => string.Equals(u.Login, "user")).Select(u => u.Id).FirstOrDefault(),
                         PublicationTime = DateTime.Now
                     }
+
                 };
                 context.Comments.AddRange(comments);
                 await context.SaveChangesAsync(default);
@@ -118,6 +138,7 @@ namespace MyBlog.Data
                         UserName = "Administrator",
                         RoleId = roles.ElementAtOrDefault(1)?.Id,
                         RegistrationDate = DateTime.Now,
+                        HasPhoto = true,
                     },
                     new User
                     {
@@ -126,6 +147,7 @@ namespace MyBlog.Data
                         UserName = "User",
                         RoleId = roles.ElementAtOrDefault(2)?.Id,
                         RegistrationDate = DateTime.Now,
+                        HasPhoto = true,
                     },
                 };
                 context.Users.AddRange(users);

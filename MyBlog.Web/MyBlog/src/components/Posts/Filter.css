@@ -1,0 +1,23 @@
+.filter{
+    width: fit-content;
+}
+
+.filter select,
+.filter input{
+    width: 100%;
+}
+
+.filterButtonWrapper{
+   width: 100%;
+}
+
+.filterButton{
+    display: flex;
+    margin-top: 16px;
+    width: 100%;
+}
+
+.filterButton a{
+    display: flex;
+    margin: auto;
+}

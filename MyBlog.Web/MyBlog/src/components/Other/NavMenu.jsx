@@ -19,12 +19,11 @@ export default class NavMenu extends Component {
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
         this.state = {
-            collapsed: false,
+            menuExpanded: false,
             logoutModal: false,
             role: AuthHelper.getRole(),
             id: AuthHelper.getId(),
-            width: 0,
-            height: 0
+            width: 0
         };
     }
 
@@ -32,7 +31,7 @@ export default class NavMenu extends Component {
         this.setState({ 
             role: AuthHelper.getRole(),
             id: AuthHelper.getId(),
-            collapsed: false,
+            menuExpanded: false,
         });
     }
 
@@ -46,12 +45,12 @@ export default class NavMenu extends Component {
     }
 
     updateWindowDimensions() {
-        this.setState({ width: window.innerWidth, height: window.innerHeight });
+        this.setState({ width: window.innerWidth });
     }
 
     toggleNavbar () {
         this.setState({
-            collapsed: !this.state.collapsed
+            menuExpanded: !this.state.menuExpanded
         });
     }
 
@@ -132,9 +131,9 @@ export default class NavMenu extends Component {
                 {brand}
             </div>
 
-        const listMenu = this.state.collapsed && this.state.width <= 694 ?
+        const listMenu = this.state.menuExpanded && this.state.width <= 694 ?
             <Portal>
-                <div className="listMenuOverlay">
+                <div className="modalOverlay" onClick={this.toggleNavbar}>
                     <div className="listMenu">
                         {feed}
                         {newPost}

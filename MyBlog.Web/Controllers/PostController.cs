@@ -22,11 +22,11 @@ namespace MyBlog.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Page<PostLiteDto>>> Index([FromQuery] int page = 0, int pageSize = 4, string search = null, int? categoryId = null, string tags = null, string from = null, string to = null, int? author = null)
+        public async Task<ActionResult<Page<PostLiteDto>>> Index([FromQuery] int page = 0, int pageSize = 4, string name = null, int? categoryId = null, string tags = null, string from = null, string to = null, int? author = null)
         {
             return await HandleExceptions(async () =>
             {
-                return Ok(await _postManager.GetPostsAsync(page, pageSize, search, categoryId, tags, from, to, author));
+                return Ok(await _postManager.GetPostsAsync(page, pageSize, name, categoryId, tags, from, to, author));
             });
         }
 

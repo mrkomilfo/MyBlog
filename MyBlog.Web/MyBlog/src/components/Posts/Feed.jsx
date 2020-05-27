@@ -3,6 +3,8 @@ import queryString from 'query-string';
 
 import Alert from '../Common/Alert';
 import PostMini from './PostMini';
+import Filter from './Filter';
+import Portal from '../Common/Portal';
 
 import './Feed.css'
 
@@ -17,24 +19,62 @@ export default class Feed extends Component {
             pageSize: 8, 
             totalRecords: 0,  
             error: false, 
-            errorMessage: '' 
+            errorMessage: '',
+            width: '',
+            filterExpanded: false
         };
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.toggleFilter = this.toggleFilter.bind(this);
+        this.setWrapperRef = this.setWrapperRef.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
     componentDidMount() {
         this.loadFeed();
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
+        document.addEventListener('mousedown', this.handleClickOutside);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.state.query !== window.location.search) {
-            this.setState({ query: window.location.search });
+            this.setState({ query: window.location.search, filterExpanded: false });
             this.loadFeed();
         }
+    }
+      
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    setWrapperRef(node) {
+        this.wrapperRef = node;
+      }
+    
+    handleClickOutside(event) {
+        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+            this.toggleFilter();
+        }
+    }
+
+    updateWindowDimensions() {
+        this.setState({ width: window.innerWidth });
+    }
+
+    toggleFilter(){
+        this.setState({
+            filterExpanded: !this.state.filterExpanded
+        });
     }
 
     renderFeed(posts){
         return(
-            <div>
+            posts.length < 1 ?
+            <div className="feedMain">
+                <p className="nothingFound">Nothing found</p>
+            </div> :
+            <div className="feedMain">
                 <ul className="feedList">
                     {posts.map(p => <li className="feedListItem" key={p.id}><PostMini post={p}/></li>)}
                 </ul>
@@ -53,27 +93,58 @@ export default class Feed extends Component {
             ? <p><em>Loading...</em></p>
             : this.renderFeed(this.state.posts);
     
-        return (
-            <>
-            {errorBaner}
-            <div>
-                <div>
-                    {content}
+        if(this.state.width > 694)
+        {
+            const sideBar = 
+                <div className="sideBar">
+                    <Filter />
                 </div>
-                {/*<div style={filterStyle}>
-                    <EventsSideBar />
-                </div>*/}
-            </div>
-            </>
-        );
+
+            return(
+                <>
+                {errorBaner}
+                <div className="feed">
+                    {content}
+                    {sideBar}
+                </div>
+                </>
+            )
+        }
+        else{
+            const filter = <Portal><img className="filterIcon" src="/icons/filter.png" onClick={this.toggleFilter}/></Portal>
+
+            const sideBar = this.state.filterExpanded ?
+                <Portal>
+                    <div className="modalOverlay">
+                        <div className="collapsedFilter">
+                            <div className="whiteBackground" ref={this.setWrapperRef}>
+                                <Filter />
+                            </div>
+                        </div>
+                    </div>
+                </Portal> : 
+                null
+
+            return(
+                <>
+                    {errorBaner}
+                    {filter}
+                    <div className="feed">
+                        {content}
+                        {sideBar}
+                    </div>
+                </>
+            );
+        }
+        
     }
 
     async loadFeed() {
-        let page; let search; let categoryId; let tags; let from; let to; let author;
+        let page; let name; let categoryId; let tags; let from; let to; let author;
         const parsed = queryString.parse(window.location.search);
         if (parsed) {
             page = parsed['page'] || 0;
-            search = parsed['search'];
+            name = parsed['name'];
             categoryId = parsed['categoryId'];
             tags = parsed['tags'];
             from = parsed['from'];
@@ -82,8 +153,8 @@ export default class Feed extends Component {
         }
 
         let queryTrailer = '?page=' + page;
-        if (search) {
-            queryTrailer += `&search=${search}`
+        if (name) {
+            queryTrailer += `&name=${name}`
         }
         if (categoryId) {
             queryTrailer += `&categoryId=${categoryId}`

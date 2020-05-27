@@ -24,13 +24,13 @@ namespace MyBlog.DomainLogic.Managers
             _appContext = appContext;
             _mapper = mapper;
         }
-        public async Task<Page<PostLiteDto>> GetPostsAsync(int index, int pageSize, string search, int? categoryId, string tags, string from, string to, int? author)
+        public async Task<Page<PostLiteDto>> GetPostsAsync(int index, int pageSize, string name, int? categoryId, string tags, string from, string to, int? author)
         {
             var result = new Page<PostLiteDto>() { CurrentPage = index, PageSize = pageSize };
             var query = _appContext.Posts.Include(p => p.Category).Include(p=>p.Author).AsQueryable();
-            if (search != null)
+            if (name != null)
             {
-                query = query.Where(p => p.Name.ToLower().Contains(search.ToLower()));
+                query = query.Where(p => p.Name.ToLower().Contains(name.ToLower()));
             }
             if (categoryId.HasValue)
             {
@@ -52,11 +52,11 @@ namespace MyBlog.DomainLogic.Managers
             }
             if (from != null)
             {
-                query = query.Where(p => DateTime.ParseExact(from, "d/M/yyyy", CultureInfo.InvariantCulture) <= p.PublicationTime);
+                query = query.Where(p => DateTime.ParseExact(from, "d/M/yyyy", CultureInfo.InvariantCulture) <= p.PublicationTime.Date);
             }
             if (to != null)
             {
-                query = query.Where(p => DateTime.ParseExact(to, "d/M/yyyy", CultureInfo.InvariantCulture) >= p.PublicationTime);
+                query = query.Where(p => DateTime.ParseExact(to, "d/M/yyyy", CultureInfo.InvariantCulture) >= p.PublicationTime.Date);
             }
             if (author.HasValue)
             {
