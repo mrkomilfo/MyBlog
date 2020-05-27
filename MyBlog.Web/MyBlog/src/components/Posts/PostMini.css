@@ -1,0 +1,115 @@
+.postMini{
+    padding: 4px 16px !important;
+    width: min(96%, 520px) !important;
+}
+
+.postMiniImage{
+    object-fit: cover,
+}
+
+.postMiniHeader{
+    font-size: 32px;
+    color: black;
+}
+
+.postMiniHeader:hover{
+    text-decoration: none;
+    color: black;
+    text-shadow: black 0 0 1px;
+}
+
+.postMiniCategory{
+    font-size: 22px;
+    color: grey;
+}
+
+.postMiniCategory:hover{
+    text-decoration: none;
+    color: grey;
+    text-shadow: grey 0 0 1px;
+}
+
+.postMiniImage{
+    width: 100%;
+}
+
+.tag{
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    background-color: lightgray;
+    margin-right: 4px;
+    color: black;
+    padding: 1px 4px 4px;
+}
+
+.tag:hover{
+    text-decoration: none;
+    color: black;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.commentIcon{
+    height: 32px;
+    width: 32px;
+}
+
+.commentsQuantity{
+    color: black;
+    font-size: 22px;
+    position: relative;
+    top: 4px;
+    margin-left: 4px;
+}
+
+.commentsQuantity:hover{
+    color: black;
+    text-decoration: none;
+}
+
+.postMiniTags{
+    margin-bottom: 12px;
+}
+
+.postMiniHr{
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.postMiniFooter{
+    justify-content: space-between;
+    display: flex;
+}
+
+.postMiniFooterLeft{
+    position: relative;
+    display: inline;
+
+}
+
+.postMiniFooterRight{
+    display: inline-flex;
+}
+
+.authorIcon{
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    margin-right: 8px;
+}
+
+.authorDateWrapper{
+    position: relative;
+    top: -2px;
+}
+
+.postMiniAuthorName{
+    margin-bottom: 0px;
+    font-weight: bold;
+}
+
+.postMiniDate{
+    margin-bottom: 0px;
+}
+
+

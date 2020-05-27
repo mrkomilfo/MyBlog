@@ -109,7 +109,7 @@ export default class NavMenu extends Component {
                     <Link className="navBarItem" to={`/user?id=${this.state.id}`}>My profile</Link>
                 </div>
                 <div className="navBarItemWrapper">  
-                    <Link className="navBarItem" to="" onClick={this.toggleLogoutModal}>Log out</Link>
+                    <Link className="navBarItem" to="#" onClick={this.toggleLogoutModal}>Log out</Link>
                 </div>
             </>
 
@@ -152,8 +152,8 @@ export default class NavMenu extends Component {
                 {headerContent}
             </header>
             {listMenu}
-            <Modal isOpen={this.state.logoutModal} title="Confirm action" onCancel={this.toggleLogoutModal} onSubmit={this.logout}>Are you sure you want to log out?</Modal>
-            </>
+            <Modal isOpen={this.state.logoutModal} title="Confirm action" onCancel={this.toggleLogoutModal} onSubmit={this.logout} path='/signIn'>Are you sure you want to log out?</Modal>
+            </> 
         );
     }
 }

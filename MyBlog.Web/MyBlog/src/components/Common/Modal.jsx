@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 import Portal from './Portal';
 import Button from './Button';
 
+import { Link } from 'react-router-dom';
+
 import './Modal.css';
 
 export default class Modal extends Component {
+
     render(){
         return(
             <>
@@ -21,7 +24,7 @@ export default class Modal extends Component {
                                 </div>
                                 <div className="modalFooter">
                                     <Button onClick={this.props.onCancel} className="secondary">Cancel</Button>
-                                    <Button onClick={this.props.onSubmit}>Confirm</Button>    
+                                    <Link to={this.props.path}><Button onClick={this.props.onSubmit}>Confirm</Button></Link>    
                                 </div>
                             </div>
                         </div>
@@ -38,11 +41,14 @@ Modal.propTypes = {
     onCancel: PropTypes.func,
     onSubmit: PropTypes.func,
     children: PropTypes.node,
+    path: PropTypes.string
 };
+
 Modal.defaultProps = {
     title: 'Title',
     isOpen: false,
     onCancel: () => {},
     onSubmit: () => {},
     children: null,
+    path: '#'
 };
