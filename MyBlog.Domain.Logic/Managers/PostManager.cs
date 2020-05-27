@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Data;
+using MyBlog.Domain;
 using MyBlog.DomainLogic.Helpers;
 using MyBlog.DomainLogic.Interfaces;
 using MyBlog.DomainLogic.Models.Common;
 using MyBlog.DomainLogic.Models.Post;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,7 +38,17 @@ namespace MyBlog.DomainLogic.Managers
             }
             if (tags != null)
             {
-                query = query.Where(p => tags.ParseSubstrings(",").All(t=>_appContext.PostsTags.Include(pt => pt.Tag).Where(pt => pt.PostId == p.Id).Select(pt => pt.Tag.Name).Contains(t)));
+                var targetTags = tags.ParseSubstrings(",");
+                List<Post> includingList = new List<Post>();
+                foreach (var p in query)
+                {
+                    var postTags = await _appContext.PostsTags.Include(pt => pt.Tag).Where(pt => pt.PostId == p.Id).Select(pt=>pt.Tag.Name).ToListAsync();
+                    if (targetTags.All(t => postTags.Contains(t)))
+                    {
+                        includingList.Add(p);
+                    }
+                }
+                query = query.Where(p => includingList.Select(p => p.Id).Contains(p.Id));
             }
             if (from != null)
             {

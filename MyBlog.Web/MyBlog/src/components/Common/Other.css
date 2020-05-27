@@ -2,3 +2,12 @@
     margin: 0px auto 12px;
     width: max-content;
 }
+
+a {
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+    color: black;
+}

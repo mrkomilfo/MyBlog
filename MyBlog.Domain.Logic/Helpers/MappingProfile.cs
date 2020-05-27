@@ -19,13 +19,13 @@ namespace MyBlog.DomainLogic.Helpers
                .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))
                .ForMember(m => m.PublicationTime, opt => opt.MapFrom(m => m.PublicationTime.ToString("f")));
             CreateMap<Post, PostLiteDto>()
-                .ForMember(m => m.PublicationTime, opt => opt.MapFrom(m => m.PublicationTime.ToString("f")))
+                .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.ToString("d")))
                 .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))
                 .ForMember(m => m.AuthorId, opt => opt.MapFrom(m => m.Author.Id))
                 .ForMember(m => m.Tags, opt => opt.Ignore())
                 .ForMember(m => m.Comments, opt => opt.Ignore());
             CreateMap<Post, PostFullDto>()
-                .ForMember(m => m.PublicationTime, opt => opt.MapFrom(m => m.PublicationTime.ToString("f")))
+                .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.ToString("d")))
                 .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))
                 .ForMember(m => m.AuthorId, opt => opt.MapFrom(m => m.Author.Id))
                 .ForMember(m => m.Tags, opt => opt.Ignore());

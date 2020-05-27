@@ -35,7 +35,7 @@ export default class SignUp extends Component {
             {errorBaner}
             <div className="form">
                 <h2>Sign in</h2>  
-                <form className="formContent">    
+                <div className="formContent">    
                     <div className="formGroup">
                         <label>Login</label>
                         <input required type="text" name="login" id="login" value={this.state.login} onChange={this.handleInputChange}/>
@@ -45,7 +45,7 @@ export default class SignUp extends Component {
                         <input required type="password" name="password" id="password" value={this.state.password} onChange={this.handleInputChange}/>
                     </div>
                     <Button color="primary" onClick={this.logIn}>Log in</Button>
-                </form>
+                </div>
             </div>
             </>
         )
@@ -65,13 +65,14 @@ export default class SignUp extends Component {
         }).then((response) => {
             this.setState({error: !response.ok});
             return response.json();
-        }).then((data) => { debugger;
+        }).then((data) => {
             if (this.state.error){
                 this.setState({
                     errorMessage: data.message
                 });
             }
             else {
+                debugger;
                 AuthHelper.saveAuth(data.name, data.accessToken, data.role, data.login, data.password);
                 this.props.history.push("/feed");
             }
