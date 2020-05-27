@@ -1,3 +1,9 @@
 .feedList{
-    padding-left: 0px;
+    width: min(96%, 520px);
+    margin: auto;
+    padding: 0px;
+}
+
+.feedListItem{
+    list-style-type: none;
 }

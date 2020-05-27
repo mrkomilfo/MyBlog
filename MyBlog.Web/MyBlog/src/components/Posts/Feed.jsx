@@ -36,7 +36,7 @@ export default class Feed extends Component {
         return(
             <div>
                 <ul className="feedList">
-                    {posts.map(p => <li style={{listStyleType: 'none'}} key={p.id}><PostMini post={p}/></li>)}
+                    {posts.map(p => <li className="feedListItem" key={p.id}><PostMini post={p}/></li>)}
                 </ul>
                 {/*<FeedPaginator currentPage={this.state.currentPage} totalPages={Math.ceil(this.state.totalRecords / this.state.pageSize)}/>*/}
             </div>             

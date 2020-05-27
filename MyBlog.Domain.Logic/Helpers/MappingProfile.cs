@@ -17,7 +17,7 @@ namespace MyBlog.DomainLogic.Helpers
 
             CreateMap<Comment, CommentLiteDto>()
                .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))
-               .ForMember(m => m.PublicationTime, opt => opt.MapFrom(m => m.PublicationTime.ToString("f")));
+               .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.ToString("d")));
             CreateMap<Post, PostLiteDto>()
                 .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.ToString("d")))
                 .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))

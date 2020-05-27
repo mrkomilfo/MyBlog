@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import AuthorDate from './AuthorDate';
 
 import './PostMini.css';
 import '../Common/Form.css';
@@ -12,14 +13,13 @@ export default class PostMini extends Component {
 
         const tags = Object.keys(this.props.post.tags).map((key, index) => {
             return (
-                <Link className="tag" to={"/feed?tags=" + this.props.post.tags[key]} key={key}>#{this.props.post.tags[key]} </Link>
+                <Link className="postMiniTag" to={"/feed?tags=" + this.props.post.tags[key]} key={key}>#{this.props.post.tags[key]} </Link>
             );
         });
                 
         return(
         <div className="form postMini">
             <Link className="postMiniHeader" to={`/post?id=${this.props.post.id}`}>{this.props.post.name}</Link>
-            <br/>
             <Link className="postMiniCategory" to={`/feed?categoryId=${this.props.post.category.id}`}>{this.props.post.category.name}</Link>
             <hr className="postMiniHr"/>
             {image}
@@ -29,15 +29,10 @@ export default class PostMini extends Component {
             <div className="postMiniFooter">
                 <Link className="postMiniFooterLeft" to={`/post?id=${this.props.post.id}`}>
                     <img className="commentIcon" src="/icons/comment.png"/>
-                    <span className="commentsQuantity">{this.props.post.comments}</span>
+                    <span className="postMiniCommentsQuantity">{this.props.post.comments}</span>
                 </Link>
-                <Link className="postMiniFooterRight" to={`/user?id=${this.props.post.authorId}`}>
-                    <img className="authorIcon" src={this.props.post.authorPhoto}/>
-                    <div className="authorDateWrapper">
-                        <p className="postMiniAuthorName">{this.props.post.authorName}</p>
-                        <p className="postMiniDate">{this.props.post.publicationDate}</p>
-                    </div>
-                </Link>
+                <AuthorDate authorId={this.props.post.authorId} authorPhoto={this.props.post.authorPhoto} 
+                    authorName={this.props.post.authorName} publicationDate={this.props.post.publicationDate}/>
             </div>
         </div>)
     }
