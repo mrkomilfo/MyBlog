@@ -1,0 +1,34 @@
+.feedPaginator{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: auto;
+}
+
+.paginationElement
+{
+    font-size: 22px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: white;
+    padding: 4px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.disabled
+{
+    background-color: grey;
+}
+
+.active
+{
+    background-color: yellow;
+}
+
+.available:hover
+{
+    background-color: lightgray;
+}

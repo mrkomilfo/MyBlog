@@ -31,6 +31,10 @@
     width: 100%;
 }
 
+.postMinishortDescription{
+    margin-top: 6px;
+}
+
 .postMiniTag{
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 6px;
