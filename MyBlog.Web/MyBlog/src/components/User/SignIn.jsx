@@ -5,6 +5,7 @@ import AuthHelper from '../../Utils/authHelper';
 
 import '../Common/Form.css';
 import '../Common/Other.css';
+import './SignIn.css';
 
 export default class SignUp extends Component {
     constructor(props) {
@@ -33,7 +34,7 @@ export default class SignUp extends Component {
         return( 
             <>
             {errorBaner}
-            <div className="form">
+            <div className="form signIn">
                 <h2>Sign in</h2>  
                 <div className="formContent">    
                     <div className="formGroup">
@@ -44,7 +45,7 @@ export default class SignUp extends Component {
                         <label>Password</label>
                         <input required type="password" name="password" id="password" value={this.state.password} onChange={this.handleInputChange}/>
                     </div>
-                    <Button color="primary" onClick={this.logIn}>Log in</Button>
+                    <Button className="signInButton" color="primary" onClick={this.logIn}>Log in</Button>
                 </div>
             </div>
             </>

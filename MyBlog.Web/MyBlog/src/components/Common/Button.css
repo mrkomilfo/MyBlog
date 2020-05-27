@@ -22,6 +22,10 @@
     cursor: not-allowed;
   }
 
+  .btn:focus{
+    outline: none;
+  }
+
   .btn.secondary {
     border: 1px solid rgba(0, 0, 0, 0.2);
     background-color: #FFF;
