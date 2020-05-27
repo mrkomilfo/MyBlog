@@ -5,6 +5,7 @@ import Alert from '../Common/Alert';
 import PostMini from './PostMini';
 import Filter from './Filter';
 import Portal from '../Common/Portal';
+import FeedPaginator from './FeedPaginator';
 
 import './Feed.css'
 
@@ -78,7 +79,7 @@ export default class Feed extends Component {
                 <ul className="feedList">
                     {posts.map(p => <li className="feedListItem" key={p.id}><PostMini post={p}/></li>)}
                 </ul>
-                {/*<FeedPaginator currentPage={this.state.currentPage} totalPages={Math.ceil(this.state.totalRecords / this.state.pageSize)}/>*/}
+                <FeedPaginator currentPage={this.state.currentPage} totalPages={Math.ceil(this.state.totalRecords / this.state.pageSize)}/>
             </div>             
         )
     }
