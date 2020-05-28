@@ -70,6 +70,16 @@ export default class PostFull extends Component {
             );
         });
 
+        const commentForm = this.state.userRole !== 'Guest' ? 
+        <div className="form commentForm">
+            <h2 className="commentFormHeader">Left your comment</h2>
+            <hr className="commentFormHr"/>
+            <div className="commentFormBody">
+                <textarea className="commentFormInput" type="text" placeholder="Your comment..."/>
+                <Button className="commentFormButton">Send</Button>
+            </div>
+        </div> : null
+
         const comments = this.state.comments.map((currentValue)=>{
             const canDelete = currentValue.authorId == this.state.userId 
                 || this.state.userId == this.state.authorId 
@@ -90,23 +100,20 @@ export default class PostFull extends Component {
                     <Link className="postFullCategory" to={`/feed?categoryId=${this.state.category.id}`}>{this.state.category.name}</Link>
                     <hr className="postFullHr"/>
                     {image}
-                    <p className="postFullshortDescription">{this.state.description}</p>
+                    <p className="postFullDescription">{this.state.description}</p>
                     <div className="postFullTags">{tags}</div>
                     <hr className="postFullHr"/>
                     <div className="postFullFooter">
+                        <div className="postFullFooterLeft">
+                            <img className="commentIcon" src="/icons/comment.png"/>
+                            <span className="postFullCommentsQuantity">{this.state.comments.length}</span>
+                        </div>
                         <AuthorDate authorId={this.state.authorId} authorPhoto={this.state.authorPhoto} 
                             authorName={this.state.authorName} publicationDate={this.state.publicationDate}/>
                     </div>
                     <Modal isOpen={this.state.deleteModal} title="Confirm action" onCancel={this.toggleDeleteModal}>Are you sure you want to delete post?</Modal>
                 </div>
-                <div className="form commentForm">
-                    <h2 className="commentFormHeader">Comments <span className="postFullCommentsQuantity">{this.state.comments.length}</span></h2>
-                    <hr className="commentFormHr"/>
-                    <div className="commentFormBody">
-                        <textarea className="commentFormInput" type="text" placeholder="Your comment..."/>
-                        <Button className="commentFormButton">Send</Button>
-                    </div>
-                </div>
+                {commentForm}
                 <div className="comments">
                     {comments}
                 </div>
