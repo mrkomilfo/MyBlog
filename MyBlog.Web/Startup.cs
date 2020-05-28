@@ -17,6 +17,7 @@ using MyBlog.DomainLogic.Managers;
 using MyBlog.DomainLogic.Helpers;
 using AuthOptions = MyBlog.Web.Helpers.AuthOptions;
 using MyBlog.Web.Service;
+using Microsoft.Extensions.Azure;
 
 namespace MyBlog.Web
 {
@@ -75,6 +76,11 @@ namespace MyBlog.Web
             services.AddScoped<ICategoryManager, CategoryManager>();
             services.AddScoped<IHostServices, HostServices>();
             services.AddSingleton<IWebHostEnvironment>(Environment);
+
+            services.AddAzureClients(builder =>
+            {
+                builder.AddBlobServiceClient(Configuration["ConnectionStrings:DefaultConnection1"]);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,7 +90,7 @@ namespace MyBlog.Web
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseDeveloperExceptionPage();
             app.UseAuthentication();
       
             app.UseHttpsRedirection();
