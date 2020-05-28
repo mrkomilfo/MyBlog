@@ -4,3 +4,5 @@ App has 3 roles excluding guest. Use the following access keys to log in with a 
 * user (login: user, password: user)
 * administrator (login: admin, password: admin)
 * account manager (login: accountManager, password: accountManager)
+
+<https://myblogweb20200528025145.azurewebsites.net/>
