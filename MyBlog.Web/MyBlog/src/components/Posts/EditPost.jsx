@@ -172,7 +172,6 @@ export default class EditPost extends Component {
         else imageBlock = null
 
         return(
-            <>
             <div className="form newPost">
                 <h2>Edit post</h2>
                 <div className="formContent">
@@ -215,7 +214,6 @@ export default class EditPost extends Component {
                     </div>
                 </div>
             </div>
-            </>
         )
     }
 
