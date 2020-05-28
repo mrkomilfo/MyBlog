@@ -58,7 +58,7 @@ export default class PostFull extends Component {
 
         const editDelete = this.state.userId == this.state.authorId || this.state.userRole === 'Admin' ?
             <div className="postFullEditDelete">
-                <span className="postFullEdit">Edit</span>
+                <Link className="postFullEdit" to={`/editPost?id=${this.state.id}`}>Edit</Link>
                 |
                 <span className="postFullDelete" onClick={this.toggleDeleteModal}>Delete</span>
             </div> :
@@ -66,7 +66,7 @@ export default class PostFull extends Component {
 
         const tags = Object.keys(this.state.tags).map((key) => {
             return (
-                <Link className="postFullTag" to={"/feed?t ags=" + this.state.tags[key]} key={key}>#{this.state.tags[key]} </Link>
+                <Link className="postFullTag" to={"/feed?tags=" + this.state.tags[key]} key={key}>#{this.state.tags[key]} </Link>
             );
         });
 
@@ -129,7 +129,7 @@ export default class PostFull extends Component {
         </Alert> : null;
 
         const content = this.state.loading
-            ? <p><em>Loading...</em></p>
+            ? <p className="loading">Loading</p>
             : this.renderPost();
 
         return(

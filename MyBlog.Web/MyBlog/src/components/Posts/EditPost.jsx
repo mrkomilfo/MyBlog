@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
+import queryString from 'query-string';
 
 import Alert from '../Common/Alert';
 import Button from '../Common/Button';
 
 import AuthHelper from '../../Utils/authHelper'
 
-import './NewPost.css'
-
-export default class NewPost extends Component {
+export default class EditPost extends Component {
     constructor(props) {
         super(props);
         this.state = { 
@@ -16,8 +15,10 @@ export default class NewPost extends Component {
             shortDescription: '',
             description: '',
             tags: '',
+            imagePath: '', 
             imageFile: null,
             fileName: '',
+            hasImage: false,
             formErrors: { 
                 name: '', 
                 category: '', 
@@ -26,11 +27,11 @@ export default class NewPost extends Component {
                 tags: '',
                 imageFile: ''
             },
-            formValid: false,
-            nameValid: false, 
-            categoryValid: false, 
-            shortDescriptionValid: false,
-            descriptionValid: false, 
+            formValid: true,
+            nameValid: true, 
+            categoryValid: true, 
+            shortDescriptionValid: true,
+            descriptionValid: true, 
             tagsValid: true,
             imageFileValid: true,
 
@@ -40,8 +41,16 @@ export default class NewPost extends Component {
         };
         this.handleinputChange = this.handleinputChange.bind(this);
         this.validateField = this.validateField.bind(this);
-        this.createPost = this.createPost.bind(this);
+        this.editPost = this.editPost.bind(this);
         this.cancel = this.cancel.bind(this);
+    }
+
+    componentDidMount() {
+        const parsed = queryString.parse(window.location.search);
+        if (parsed) {
+            this.loadPost(parsed['id']);
+        }
+        this.loadCategories();
     }
 
     handleinputChange(event) {
@@ -54,6 +63,7 @@ export default class NewPost extends Component {
             this.setState({
                 fileName: value,
                 imageFile: target.files[0],
+                hasImage: true
             }, 
                 () => { this.validateField(name, target.files[0]) 
             }); 
@@ -119,6 +129,7 @@ export default class NewPost extends Component {
     }
 
     validateForm() {
+        debugger;
         this.setState({
             formValid: 
                 this.state.nameValid &&
@@ -134,35 +145,36 @@ export default class NewPost extends Component {
     {
         this.setState({
             imageFile: null,
+            hasImage: false,
             fileName: '',
+            imagePath: '',
             imageFileValid: true,
         }, this.validateForm)
     }
 
     cancel()
     {
-        this.props.history.push(`/feed`);
+        this.props.history.push(`/post?id=${this.state.id}`);
     }
 
-    componentDidMount() {
-        this.loadCategories();
-    }
-
-    render(){
-
-        const errorBaner = this.state.errorMessage ?
-        <Alert>
-            {this.state.errorMessage}
-        </Alert> : null;
-
+    renderPost(){
         const categoriesSelect = this.state.categories.map(c => <option key={c.id.toString()} value={c.id}>{c.name}</option>)
-        const imageBlock = this.state.imageFile ? <img className="newPostImage" src={URL.createObjectURL(this.state.imageFile)} alt="post image" onClick={(e) => this.removeImage()}/> : null;
+        
+        let imageBlock;
+        if (this.state.imageFile)
+        {
+            imageBlock = <img className="newPostImage" src={URL.createObjectURL(this.state.imageFile)} alt="post image" onClick={(e) => this.removeImage()}/>
+        }
+        else if (this.state.imagePath)
+        {
+            imageBlock = <img className="newPostImage" src={this.state.imagePath} alt="post image" onClick={(e) => this.removeImage()}/>
+        }
+        else imageBlock = null
 
         return(
             <>
-            {errorBaner}
             <div className="form newPost">
-                <h2>New post</h2>
+                <h2>Edit post</h2>
                 <div className="formContent">
                     <div className="formGroup">
                         <label>Post name</label>
@@ -198,12 +210,30 @@ export default class NewPost extends Component {
                         {imageBlock}
                     </div>
                     <div className="newPostButtonPanel">
-                        <Button disabled = {!this.state.formValid} onClick={() => this.createPost()}>Post</Button>{' '}
+                        <Button disabled = {!this.state.formValid} onClick={() => this.editPost()}>Save</Button>{' '}
                         <Button className="secondary" onClick={() => this.cancel()}>Cancel</Button>
                     </div>
                 </div>
             </div>
             </>
+        )
+    }
+
+    render(){
+        const errorBaner = this.state.errorMessage ?
+        <Alert>
+            {this.state.errorMessage}
+        </Alert> : null;
+
+        const content = this.state.loading
+            ? <p className="loading">Loading</p>
+            : this.renderPost();
+
+        return(
+        <>
+            {errorBaner}
+            {content}
+        </>
         )
     }
 
@@ -234,7 +264,43 @@ export default class NewPost extends Component {
             });
     }
 
-    createPost()
+    async loadPost(postId) {
+        const token = AuthHelper.getToken();
+        fetch('api/Post/' + postId + '/update', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        }).then((response) => {
+            this.setState({error: !response.ok});
+            return response.json();
+        }).then((data) => {
+            if (this.state.error){
+                this.setState({ 
+                    errorMessage: data.message 
+                });
+            }
+            else {
+                this.setState({ 
+                    id: data.id,
+                    name: data.name,
+                    category: data.categoryId,
+                    shortDescription: data.shortDescription,
+                    description: data.description,
+                    tags: data.tags,
+                    imagePath: data.image,
+                    hasImage: !!data.image,
+                    loading: false
+                });
+            }
+        }).catch((ex) => {
+            this.setState({
+                errorMessage: ex.toString()
+            });
+        });
+    }
+
+    editPost()
     {
         if (!this.state.formValid)
         {
@@ -248,7 +314,7 @@ export default class NewPost extends Component {
         formdata.append('categoryId', this.state.category);
         formdata.append('shortDescription', this.state.shortDescription);
         formdata.append('description', this.state.description);
-        formdata.append('authorId', AuthHelper.getId());
+        formdata.append('hasImage', this.state.hasImage);
         if (this.state.tags) {
             formdata.append('tags', this.state.tags);
         }
@@ -258,14 +324,14 @@ export default class NewPost extends Component {
         }
         const token = AuthHelper.getToken();
         fetch('api/Post', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Authorization': 'Bearer ' + token
             },
             body: formdata
         }).then((response) => {
             if (response.ok){
-                this.props.history.push("/feed");
+                this.props.history.push(`/post?id=${this.state.id}`);
             }
             else {
                 return response.json();

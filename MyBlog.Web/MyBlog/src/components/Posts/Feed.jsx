@@ -91,7 +91,7 @@ export default class Feed extends Component {
         </Alert> : null;
 
         const content = this.state.loading
-            ? <p><em>Loading...</em></p>
+            ? <p className="loading">Loading</p>
             : this.renderFeed(this.state.posts);
     
         if(this.state.width > 694)
