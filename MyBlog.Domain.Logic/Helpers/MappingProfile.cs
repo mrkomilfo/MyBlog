@@ -17,15 +17,15 @@ namespace MyBlog.DomainLogic.Helpers
 
             CreateMap<Comment, CommentLiteDto>()
                .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))
-               .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.ToString("d")));
+               .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.ToString(m.PublicationTime.Flexible())));
             CreateMap<Post, PostLiteDto>()
-                .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.ToString("d")))
+                .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.Flexible()))
                 .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))
                 .ForMember(m => m.AuthorId, opt => opt.MapFrom(m => m.Author.Id))
                 .ForMember(m => m.Tags, opt => opt.Ignore())
                 .ForMember(m => m.Comments, opt => opt.Ignore());
             CreateMap<Post, PostFullDto>()
-                .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.ToString("d")))
+                .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.Flexible()))
                 .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))
                 .ForMember(m => m.AuthorId, opt => opt.MapFrom(m => m.Author.Id))
                 .ForMember(m => m.Tags, opt => opt.Ignore());
