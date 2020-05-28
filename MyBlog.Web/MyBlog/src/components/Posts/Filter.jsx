@@ -34,6 +34,16 @@ export default class Filter extends Component {
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({ 
+            name: '', 
+            category: 0, 
+            tags: '', 
+            from: '',
+            to: '',
+        });
+    }
+
     getQuerryTrailer(){
         let isFirst = true
         let queryTrailer = '';

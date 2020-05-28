@@ -15,8 +15,6 @@
     display: flex;
     margin: auto;
     justify-content: center;
-    position: relative;
-    left: -8px;
 }
 
 .nothingFound{
@@ -48,7 +46,7 @@
 .collapsedFilter{
     position: absolute;
     top: 50px;
-    width: 100%;
+    width: 96%;
 }
 
 .whiteBackground>.filter{

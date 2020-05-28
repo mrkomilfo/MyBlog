@@ -39,3 +39,8 @@ select:focus{
 .formFeedback{
     color: red;
 }
+
+input[type="file"]{
+    height: 40px;
+    padding: 4px;
+}

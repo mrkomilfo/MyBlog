@@ -24,8 +24,23 @@ namespace MyBlog.DomainLogic.Managers
             _appContext = appContext;
             _mapper = mapper;
         }
+
         public async Task<Page<PostLiteDto>> GetPostsAsync(int index, int pageSize, string name, int? categoryId, string tags, string from, string to, int? author)
         {
+            List<string> stringTags = tags?.ParseSubstrings(",").ToList();
+            List<int> postIdByTags = new List<int>();
+            if (!string.IsNullOrEmpty(tags))
+            {
+                postIdByTags = _appContext.PostsTags
+                    .Include(pt => pt.Tag)
+                    .Where(pt => stringTags.Contains(pt.Tag.Name))
+                    .AsEnumerable()
+                    .GroupBy(pt => pt.PostId)
+                    .Where(g => g.Count() == stringTags.Count)
+                    .Select(g => g.Key)
+                    .ToList();
+            }
+
             var result = new Page<PostLiteDto>() { CurrentPage = index, PageSize = pageSize };
             var query = _appContext.Posts.Include(p => p.Category).Include(p=>p.Author).AsQueryable();
             if (name != null)
@@ -38,17 +53,7 @@ namespace MyBlog.DomainLogic.Managers
             }
             if (tags != null)
             {
-                var targetTags = tags.ParseSubstrings(",");
-                List<Post> includingList = new List<Post>();
-                foreach (var p in query)
-                {
-                    var postTags = await _appContext.PostsTags.Include(pt => pt.Tag).Where(pt => pt.PostId == p.Id).Select(pt=>pt.Tag.Name).ToListAsync();
-                    if (targetTags.All(t => postTags.Contains(t)))
-                    {
-                        includingList.Add(p);
-                    }
-                }
-                query = query.Where(p => includingList.Select(p => p.Id).Contains(p.Id));
+                query = query.Where(p => postIdByTags.Contains(p.Id));
             }
             if (from != null)
             {
@@ -68,7 +73,7 @@ namespace MyBlog.DomainLogic.Managers
 
             for (int i = 0; i < result.Records.Count; i++)
             {
-                var postTags = _appContext.PostsTags.Include(et => et.Tag).Where(et => et.PostId == result.Records[i].Id).Select(et => et.Tag).ToHashSet();
+                var postTags = _appContext.PostsTags.Include(pt => pt.Tag).Where(pt => pt.PostId == result.Records[i].Id).Select(pt => pt.Tag).ToHashSet();
                 foreach (var tag in postTags)
                 {
                     result.Records[i].Tags.Add(tag.Id.ToString(), tag.Name);
@@ -98,7 +103,7 @@ namespace MyBlog.DomainLogic.Managers
             }
             var postFullDto = _mapper.Map<PostFullDto>(DbPost);
 
-            var tags = _appContext.PostsTags.Include(et => et.Tag).Where(et => et.PostId == postId).Select(et => et.Tag).ToHashSet();
+            var tags = _appContext.PostsTags.Include(pt => pt.Tag).Where(pt => pt.PostId == postId).Select(pt => pt.Tag).ToHashSet();
             foreach (var tag in tags)
             {
                 postFullDto.Tags.Add(tag.Id.ToString(), tag.Name);

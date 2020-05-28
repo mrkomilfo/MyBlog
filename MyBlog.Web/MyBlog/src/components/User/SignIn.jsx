@@ -3,8 +3,6 @@ import Alert from '../Common/Alert';
 import Button from '../Common/Button';
 import AuthHelper from '../../Utils/authHelper';
 
-import '../Common/Form.css';
-import '../Common/Other.css';
 import './SignIn.css';
 
 export default class SignUp extends Component {
