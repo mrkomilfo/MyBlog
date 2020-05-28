@@ -5,10 +5,10 @@ import Feed from './components/Posts/Feed';
 import PostFull from './components/Posts/PostFull';
 /*import NewPost from './components/Posts/NewPost';
 import EditPost from './components/Posts/EditPost';
-import Users from './components/User/Users';
-import SignUp from './components/User/SignUp';*/
+import Users from './components/User/Users';*/
 import Profile from './components/User/Profile';
 import SignIn from './components/User/SignIn';
+import SignUp from './components/User/SignUp';
 /*import EditProfile from './components/User/EditProfile';
 import Blocking from './components/User/Blocking';
 import ChangePassword from './components/User/ChangePassword';
@@ -31,9 +31,9 @@ export default class App extends Component {
                 {/*{AuthHelper.getRole() !== 'Guest' && <Route path='/newPost' component={NewPost} />}
                 {AuthHelper.getRole() !== 'Guest' && <Route path='/editPost' component={EditPost} />}
 
-                {(AuthHelper.getRole() === 'Admin' || AuthHelper.getRole() === 'Account manager') && <Route path='/users' component={Users} />}
-                <Route path='/signUp' component={SignUp} />*/}
+                {(AuthHelper.getRole() === 'Admin' || AuthHelper.getRole() === 'Account manager') && <Route path='/users' component={Users} />}*/}
                 <Route path='/user' component={Profile} />
+                <Route path='/signUp' component={SignUp} />
                 {AuthHelper.getRole() === 'Guest' && <Route path='/signIn' component={SignIn} />}
                 {/*{AuthHelper.getRole() !== 'Guest' && <Route path='/editProfile' component={EditProfile} />}
                 {AuthHelper.getRole() !== 'Guest' && <Route path='/changePassword' component={ChangePassword} />}
