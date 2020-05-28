@@ -88,23 +88,27 @@
 .postFullFooter{
     justify-content: space-between;
     display: flex;
-    flex-flow: row-reverse;
 }
 
 .postFullFooterLeft{
     position: relative;
     display: inline;
+    
 }
 
 .commentForm{
     width: 100%;
 }
 
+.postFullDescription{
+    margin-top: 6px;
+}
+
 .postFullCommentsQuantity{
-    color: grey;
-    font-size: 18px;
+    color: black;
+    font-size: 22px;
     position: relative;
-    top: -1px;
+    top: 4px;
     margin-left: 4px;
 }
 
