@@ -130,7 +130,7 @@ export default class Profile extends Component {
         </Alert> : null;
 
         const content = this.state.loading
-            ? <p><em>Loading...</em></p>
+            ? <p className="loading">Loading</p>
             : this.renderProfile();
 
         return(
