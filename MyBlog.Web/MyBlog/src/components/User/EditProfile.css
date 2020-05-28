@@ -1,0 +1,26 @@
+.editProfile{
+    width: min(96%, 750px);
+    margin: 0px auto 12px;
+}
+
+.editProfile input
+{
+    width: 100%;
+}
+
+.editProfileButtonPanel
+{
+    display: flex;
+    margin-top: 12px;
+}
+
+.editProfileButtonPanel button:first-child
+{
+    margin-right: 12px;
+}
+
+.editProfileImage{
+    max-width: 100%;
+    max-height: 420px;
+    margin-top: 8px;
+}

@@ -12,20 +12,20 @@ export default class SignUp extends Component {
             error: false,
             errorMessage: '',
 
-            name: '', 
+            userName: '', 
             email: '',
             login: '', 
             password: '', 
             passwordConfirm: '',
             formErrors: { 
-                name: '', 
+                userName: '', 
                 email: '',
                 login: '', 
                 password: '',
                 passwordConfirm: '' 
             },
             formValid: false, 
-            nameValid: false, 
+            userNameValid: false, 
             emailValid: true, 
             loginValid: false, 
             passwordValid: false, 
@@ -50,16 +50,16 @@ export default class SignUp extends Component {
     validateField(fieldName, value){
         let fieldValidationErrors = this.state.formErrors;
 
-        let nameValid = this.state.nameValid;
+        let userNameValid = this.state.userNameValid;
         let emailValid = this.state.emailValid;
         let loginValid = this.state.loginValid;
         let passwordValid = this.state.passwordValid;
         let passwordConfirmValid = this.state.passwordConfirmValid;
 
         switch(fieldName){
-            case 'name':
-                nameValid = value.length >= 4;
-                fieldValidationErrors.name = nameValid ? '' : 'Min length - 4';
+            case 'userName':
+                userNameValid = value.length >= 4;
+                fieldValidationErrors.userName = userNameValid ? '' : 'Min length - 4';
                 break;
             case 'email':
                 emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) || value.length === 0;
@@ -82,7 +82,7 @@ export default class SignUp extends Component {
         }
         this.setState({
             formErrors: fieldValidationErrors,
-            nameValid: nameValid,
+            userNameValid: userNameValid,
             emailValid: emailValid,
             loginValid: loginValid,
             passwordValid: passwordValid,
@@ -93,7 +93,7 @@ export default class SignUp extends Component {
     validateForm() {
         this.setState({
             formValid: 
-            this.state.nameValid &&
+            this.state.userNameValid &&
             this.state.emailValid &&
             this.state.loginValid &&
             this.state.passwordValid &&
@@ -115,7 +115,7 @@ export default class SignUp extends Component {
                 <div className="formContent">
                     <div className="formGroup">
                         <label>Username</label>
-                        <input required type="text" name="name" value={this.state.name} onChange={this.handleinputChange}/>
+                        <input required type="text" name="userName" value={this.state.userName} onChange={this.handleinputChange}/>
                         <div className="formFeedback">{this.state.formErrors.name}</div>
                     </div>
                     <div className="formGroup">
@@ -154,7 +154,7 @@ export default class SignUp extends Component {
             return;
         }
         let data = {
-            userName: this.state.name,
+            userName: this.state.userName,
             email: this.state.email,
             login: this.state.login, 
             password: this.state.password, 
