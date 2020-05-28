@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Alert from '../Common/Alert';
 
+import Alert from '../Common/Alert';
 import Button from '../Common/Button';
 
 import './SignUp.css';
@@ -59,23 +59,23 @@ export default class SignUp extends Component {
         switch(fieldName){
             case 'name':
                 nameValid = value.length >= 4;
-                fieldValidationErrors.name = nameValid ? '' : 'Минимальная длина - 4';
+                fieldValidationErrors.name = nameValid ? '' : 'Min length - 4';
                 break;
             case 'email':
                 emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) || value.length === 0;
-                fieldValidationErrors.email = emailValid ? '' : 'Неверный формат';
+                fieldValidationErrors.email = emailValid ? '' : 'Wrong format';
                 break;
             case 'login':
                 loginValid = value.length >= 4;
-                fieldValidationErrors.login = loginValid ? '' : 'Минимальная длина - 4';
+                fieldValidationErrors.login = loginValid ? '' : 'Min length - 4';
                 break;
             case 'password':
                 passwordValid = value.length >= 6;
-                fieldValidationErrors.password = passwordValid ? '' : 'Минимальная длина - 6';
+                fieldValidationErrors.password = passwordValid ? '' : 'Min length - 6';
                 break;
             case 'passwordConfirm':
                 passwordConfirmValid = value === this.state.password;
-                fieldValidationErrors.passwordConfirm = passwordConfirmValid ? '' : 'Пароли не совпадают';
+                fieldValidationErrors.passwordConfirm = passwordConfirmValid ? '' : 'Password mismatch';
                 break;
             default:
                 break;

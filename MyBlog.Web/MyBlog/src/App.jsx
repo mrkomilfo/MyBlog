@@ -3,8 +3,8 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Layout from './components/Other/Layout';
 import Feed from './components/Posts/Feed';
 import PostFull from './components/Posts/PostFull';
-/*import NewPost from './components/Posts/NewPost';
-import EditPost from './components/Posts/EditPost';
+import NewPost from './components/Posts/NewPost';
+/*import EditPost from './components/Posts/EditPost';
 import Users from './components/User/Users';*/
 import Profile from './components/User/Profile';
 import SignIn from './components/User/SignIn';
@@ -28,8 +28,8 @@ export default class App extends Component {
                 <Route path='/feed' component={Feed} />
                 <Route exact path='/' render={() => (<Redirect to='/feed' />)} />
                 <Route path='/post' component={PostFull} />
-                {/*{AuthHelper.getRole() !== 'Guest' && <Route path='/newPost' component={NewPost} />}
-                {AuthHelper.getRole() !== 'Guest' && <Route path='/editPost' component={EditPost} />}
+                {AuthHelper.getRole() !== 'Guest' && <Route path='/newPost' component={NewPost} />}
+                {/*{AuthHelper.getRole() !== 'Guest' && <Route path='/editPost' component={EditPost} />}
 
                 {(AuthHelper.getRole() === 'Admin' || AuthHelper.getRole() === 'Account manager') && <Route path='/users' component={Users} />}*/}
                 <Route path='/user' component={Profile} />
