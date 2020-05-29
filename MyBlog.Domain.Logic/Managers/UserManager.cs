@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using MyBlog.Domain;
 using AutoMapper;
 using MyBlog.DomainLogic.Models.Common;
+using System.IO;
 
 namespace MyBlog.DomainLogic.Managers
 {
@@ -27,7 +27,36 @@ namespace MyBlog.DomainLogic.Managers
             _mapper = mapper;
         }
 
-        public async Task<DateTime?> GetUnlockTime(int userId)
+        public async Task RegisterUserAsync(RegisterDto user)
+        {
+            if (await _appContext.Users.AnyAsync(u => string.Equals(u.Login.ToLower(), user.Login.ToLower())))
+            {
+                throw new ArgumentException($"User with login \"{user.Login}\" already exist");
+            }
+            User newUser = _mapper.Map<User>(user);
+            newUser.RoleId = (await _appContext.Roles.FirstOrDefaultAsync(r => r.Name == "User"))?.Id;
+            await _appContext.Users.AddAsync(newUser);
+            await _appContext.SaveChangesAsync(default);
+        }
+
+        public async Task UpdateUserAsync(UserUpdateDto user, string hostRoot)
+        {
+            User updatedUser = await _appContext.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            if (updatedUser == null)
+            {
+                throw new NullReferenceException($"User with id={user.Id} not found");
+            }
+            _mapper.Map(user, updatedUser);
+            if (user.Photo != null)
+            {
+                string path = $"{hostRoot}\\wwwroot\\img\\users\\{updatedUser.Id}.jpg";
+                await using var fileStream = new FileStream(path, FileMode.Create);
+                await user.Photo.CopyToAsync(fileStream);
+            }
+            await _appContext.SaveChangesAsync(default);
+        }
+
+        public async Task<DateTime?> GetUnlockTimeAsync(int userId)
         {
             if (!await _appContext.Users.AnyAsync(u => u.Id == userId))
             {
@@ -36,14 +65,14 @@ namespace MyBlog.DomainLogic.Managers
             return (await _appContext.Users.FirstAsync(u => u.Id == userId)).UnlockTime;
         }
 
-        public async Task<LoginResponseDto> Login(LoginDto model)
+        public async Task<LoginResponseDto> LoginAsync(LoginDto model)
         {
-            var identity = await GetIdentity(model.Login, model.Password);
+            var identity = await GetIdentityAsync(model.Login, model.Password);
             if (identity == null)
             {
                 throw new NullReferenceException($"Wrong login or password");
             }
-            var unlockTime = await GetUnlockTime(Int32.Parse(identity.Name));
+            var unlockTime = await GetUnlockTimeAsync(Int32.Parse(identity.Name));
             if (unlockTime != null && ((unlockTime ?? DateTime.Now) > DateTime.Now))
             {
                 throw new UnauthorizedAccessException($"Banned until {unlockTime?.ToString("f")}");
@@ -68,7 +97,7 @@ namespace MyBlog.DomainLogic.Managers
             return response;
         }
 
-        private async Task<ClaimsIdentity> GetIdentity(string login, string password)
+        private async Task<ClaimsIdentity> GetIdentityAsync(string login, string password)
         {
             ClaimsIdentity identity = null;
             var user = await _appContext.Users.Include(u => u.Role).FirstOrDefaultAsync(u => string.Equals(u.Login, login));
@@ -164,7 +193,7 @@ namespace MyBlog.DomainLogic.Managers
         {
             if (!await _appContext.Users.AnyAsync(u => u.Id == userId))
             {
-                throw new NullReferenceException($"Event with id={userId} not found");
+                throw new NullReferenceException($"Post with id={userId} not found");
             }
             return await _appContext.Users.Include(u => u.Role).Where(u => u.Id == userId).Select(u => u.Role).FirstOrDefaultAsync();
         }

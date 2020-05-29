@@ -5,6 +5,10 @@ namespace MyBlog.Domain
 {
     public class Tag
     {
+        public Tag()
+        {
+        }
+
         public Tag(string name)
         {
             Name = name;

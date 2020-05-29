@@ -94,7 +94,6 @@ export default class EditPost extends Component {
                 fieldValidationErrors.name = nameValid ? '' : 'Post must have name';
                 break;
             case 'category':
-                debugger;
                 categoryValid = !!value && value !== "0";
                 fieldValidationErrors.category = categoryValid ? '' : 'Category is not specified';
                 break;
@@ -129,7 +128,6 @@ export default class EditPost extends Component {
     }
 
     validateForm() {
-        debugger;
         this.setState({
             formValid: 
                 this.state.nameValid &&
@@ -308,6 +306,7 @@ export default class EditPost extends Component {
             return;
         }
         let formdata = new FormData();
+        formdata.append('id', this.state.id);
         formdata.append('name', this.state.name);
         formdata.append('categoryId', this.state.category);
         formdata.append('shortDescription', this.state.shortDescription);
