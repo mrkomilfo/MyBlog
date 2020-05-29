@@ -1,0 +1,22 @@
+.blocking{
+    width: min(360px, 96%);
+    margin: auto;
+}
+
+.blocking input{
+    width: 100%;
+}
+
+.blockingButtonPanel{
+    margin-top: 12px;
+}
+
+.blockingUserName{
+    margin-left: 4px;
+    color: grey;
+}
+
+.blockingUserName:hover{
+    color: grey;
+    text-shadow: gray 0 0 2px;
+}

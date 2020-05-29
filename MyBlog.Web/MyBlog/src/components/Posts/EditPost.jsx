@@ -207,8 +207,8 @@ export default class EditPost extends Component {
                         {imageBlock}
                     </div>
                     <div className="newPostButtonPanel">
-                        <Button disabled = {!this.state.formValid} onClick={() => this.editPost()}>Save</Button>{' '}
-                        <Button className="secondary" onClick={() => this.cancel()}>Cancel</Button>
+                        <Button disabled = {!this.state.formValid} onClick={this.editPost}>Save</Button>{' '}
+                        <Button className="secondary" onClick={this.cancel}>Cancel</Button>
                     </div>
                 </div>
             </div>
