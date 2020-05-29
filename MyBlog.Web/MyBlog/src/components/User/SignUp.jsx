@@ -138,7 +138,7 @@ export default class SignUp extends Component {
                         <input required type="password" name="passwordConfirm" id="passwordConfirm" value={this.state.passwordConfirm} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.passwordConfirm}</div>
                     </div>
-                    <Button className="signUpButton" disabled = {!this.state.formValid} onClick={() => this.register()}>Sign Up</Button>
+                    <Button className="signUpButton" disabled = {!this.state.formValid} onClick={this.register}>Sign Up</Button>
                 </div>
             </div>
             </>
@@ -169,7 +169,7 @@ export default class SignUp extends Component {
             body: JSON.stringify(data)
         }).then((response) => {
             if (response.ok){
-                this.props.history.push("/signUp");
+                this.props.history.push("/signIn");
             }
             else {
                 this.setState({error: true});

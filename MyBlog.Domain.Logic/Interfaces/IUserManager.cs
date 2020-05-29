@@ -9,8 +9,10 @@ namespace MyBlog.DomainLogic.Interfaces
 {
     public interface IUserManager
     {
-        Task<DateTime?> GetUnlockTime(int userId);
-        Task<LoginResponseDto> Login(LoginDto model);
+        Task RegisterUserAsync(RegisterDto user);
+        Task UpdateUserAsync(UserUpdateDto user, string hostRoot);
+        Task<DateTime?> GetUnlockTimeAsync(int userId);
+        Task<LoginResponseDto> LoginAsync(LoginDto model);
         Task<UserFullDto> GetUserAsync(int userId);
         Task<Page<UserLiteDto>> GetUsersAsync(int index, int pageSize, string search);
         Task<UserToUpdateDto> GetUserToUpdateAsync(int userId);
@@ -18,5 +20,6 @@ namespace MyBlog.DomainLogic.Interfaces
         Task<UserToChangeRoleDto> GetUserToChangeRoleAsync(int userId);
         Task<IEnumerable<Role>> GetRolesAsync();
         Task<Role> GetUserRoleAsync(int userId);
+
     }
 }

@@ -32,6 +32,7 @@
 
 .postFullEdit:hover{
     cursor: pointer;
+    color: grey;
     text-shadow: grey 0 0 1px;
 }
 

@@ -9,6 +9,7 @@ using MyBlog.DomainLogic.Models.Post;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,6 +24,76 @@ namespace MyBlog.DomainLogic.Managers
         {
             _appContext = appContext;
             _mapper = mapper;
+        }
+
+        public async Task AddPostAsync(PostCreateDto post, string hostRoot)
+        {
+            var newPost = _mapper.Map<PostCreateDto, Post>(post);
+            await _appContext.Posts.AddAsync(newPost);
+            await _appContext.SaveChangesAsync(default);
+
+            if (post.Image != null)
+            {
+                string path = $"{hostRoot}\\wwwroot\\img\\Posts\\{newPost.Id}.jpg";
+                await using var fileStream = new FileStream(path, FileMode.Create);
+                await post.Image.CopyToAsync(fileStream);
+            }
+
+            if (post.Tags != null)
+            {
+                var tags = post.Tags.ParseSubstrings(",");
+                foreach (var tagName in tags)
+                {
+                    var tag = await _appContext.Tags.FirstOrDefaultAsync(t => string.Equals(t.Name.ToLower(), tagName.ToLower()));
+                    if (tag == null)
+                    {
+                        tag = _mapper.Map<string, Tag>(tagName);
+                        await _appContext.Tags.AddAsync(tag);
+                        await _appContext.SaveChangesAsync(default);
+                    }
+                    await _appContext.PostsTags.AddAsync(new PostsTags { PostId = newPost.Id, TagId = tag.Id });
+                }
+            }
+
+            await _appContext.SaveChangesAsync(default);
+        }
+
+        public async Task UpdatePostAsync(PostUpdateDto post, string hostRoot)
+        {
+            var update = await _appContext.Posts.FirstOrDefaultAsync(e => e.Id == post.Id);
+            if (update == null)
+            {
+                throw new NullReferenceException($"Post with id={post.Id} not found");
+            }
+
+            _mapper.Map(post, update);
+            await _appContext.SaveChangesAsync(default);
+
+            _appContext.PostsTags.RemoveRange(_appContext.PostsTags.Where(et => et.PostId == post.Id));
+            if (post.Tags != null)
+            {
+                var tags = post.Tags.ParseSubstrings(",");
+                foreach (var tagName in tags)
+                {
+                    var tag = await _appContext.Tags.FirstOrDefaultAsync(t => string.Equals(t.Name.ToLower(), tagName));
+                    if (tag == null)
+                    {
+                        tag = _mapper.Map<string, Tag>(tagName);
+                        await _appContext.Tags.AddAsync(tag);
+                        await _appContext.SaveChangesAsync(default);
+                    }
+                    await _appContext.PostsTags.AddAsync(new PostsTags { PostId = update.Id, TagId = tag.Id });
+                }
+            }
+
+            if (post.Image != null)
+            {
+                string path = $"{hostRoot}\\wwwroot\\img\\Posts\\{update.Id}.jpg";
+                await using var fileStream = new FileStream(path, FileMode.Create);
+                await post.Image.CopyToAsync(fileStream);
+            }
+
+            await _appContext.SaveChangesAsync(default);
         }
 
         public async Task<Page<PostLiteDto>> GetPostsAsync(int index, int pageSize, string name, int? categoryId, string tags, string from, string to, int? author)
@@ -153,6 +224,27 @@ namespace MyBlog.DomainLogic.Managers
                 throw new NullReferenceException($"Post with id={postId} not found");
             }
             return (int)(await _appContext.Posts.FirstOrDefaultAsync(p => p.Id == postId)).AuthorId;
+        }
+
+        public async Task DeletePostAsync(int postId, bool force, string hostRoot)
+        {
+            var post = await _appContext.Posts.IgnoreQueryFilters()
+                .FirstOrDefaultAsync(p => p.Id == postId);
+            if (post == null)
+            {
+                throw new NullReferenceException($"Post with id={postId} not found");
+            }
+            if (force)
+            {
+                _appContext.Posts.Remove(post);
+                string path = $"{hostRoot}\\wwwroot\\img\\posts\\{postId}.jpg";
+                File.Delete(path);
+            }
+            else
+            {
+                post.IsDeleted = true;
+            }
+            await _appContext.SaveChangesAsync(default);
         }
     }
 }

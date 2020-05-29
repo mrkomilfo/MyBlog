@@ -84,7 +84,6 @@ export default class NewPost extends Component {
                 fieldValidationErrors.name = nameValid ? '' : 'Post must have name';
                 break;
             case 'category':
-                debugger;
                 categoryValid = !!value && value !== "0";
                 fieldValidationErrors.category = categoryValid ? '' : 'Category is not specified';
                 break;
@@ -236,6 +235,7 @@ export default class NewPost extends Component {
 
     createPost()
     {
+        debugger;
         if (!this.state.formValid)
         {
             this.setState({

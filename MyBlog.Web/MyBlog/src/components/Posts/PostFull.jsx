@@ -106,7 +106,7 @@ export default class PostFull extends Component {
                         <AuthorDate authorId={this.state.authorId} authorPhoto={this.state.authorPhoto} 
                             authorName={this.state.authorName} publicationDate={this.state.publicationDate}/>
                     </div>
-                    <Modal isOpen={this.state.deleteModal} title="Confirm action" path={`/post?id${this.state.id}`} onSubmit={this.deletePost} onCancel={this.toggleDeleteModal}>Are you sure you want to delete post?</Modal>
+                    <Modal isOpen={this.state.deleteModal} title="Confirm action" onSubmit={this.deletePost} onCancel={this.toggleDeleteModal}>Are you sure you want to delete post?</Modal>
                 </div>
                 {commentForm}
                 <div className="comments">
@@ -170,6 +170,7 @@ export default class PostFull extends Component {
     }
 
     deletePost() {
+        debugger;
         const token = AuthHelper.getToken();
         fetch('api/Post/' + this.state.id, {
             method: 'DELETE',

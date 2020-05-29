@@ -158,8 +158,8 @@ export default class EditProfile extends Component {
                         {imageBlock}
                     </div>
                     <div className="editProfileButtonPanel">
-                        <Button disabled = {!this.state.formValid} onClick={() => this.editProfile()}>Save</Button>{' '}
-                        <Button className="secondary" onClick={() => this.cancel()}>Cancel</Button>
+                        <Button disabled = {!this.state.formValid} onClick={this.editProfile}>Save</Button>{' '}
+                        <Button className="secondary" onClick={this.cancel}>Cancel</Button>
                     </div>
                 </div>
             </div>
@@ -205,7 +205,7 @@ export default class EditProfile extends Component {
                 this.setState({ 
                     id: data.id,
                     userName: data.userName,
-                    email: data.email,
+                    email: data.email || "",
                     hasImage: data.hasPhoto,
                     imagePath: data.photo,
                     loading: false
@@ -219,6 +219,7 @@ export default class EditProfile extends Component {
     }
 
     editProfile(){
+        debugger;
         if (!this.state.formValid)
         {
             this.setState({
@@ -236,7 +237,7 @@ export default class EditProfile extends Component {
             formdata.append('photo', this.state.imageFile);
         }
         const token = AuthHelper.getToken();
-        fetch('api/Users', {
+        fetch('api/User', {
             method: 'PUT',
             headers: {
                 'Authorization': 'Bearer ' + token
