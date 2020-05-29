@@ -32,6 +32,7 @@
 
 .postFullEdit:hover{
     cursor: pointer;
+    color: grey;
     text-shadow: grey 0 0 1px;
 }
 
@@ -61,6 +62,12 @@
     width: 100%;
 }
 
+.postFullTags{
+    margin: -12px 0px 12px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .postFullTag{
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 6px;
@@ -68,16 +75,13 @@
     margin-right: 4px;
     color: black;
     padding: 1px 4px 4px;
+    margin-top: 0.5rem;
 }
 
 .postFullTag:hover{
     text-decoration: none;
     color: black;
     background-color: rgba(0, 0, 0, 0.3);
-}
-
-.postFullTags{
-    margin-bottom: 12px;
 }
 
 .postFullHr{
@@ -88,34 +92,22 @@
 .postFullFooter{
     justify-content: space-between;
     display: flex;
-    flex-flow: row-reverse;
 }
 
 .postFullFooterLeft{
     position: relative;
     display: inline;
+    
 }
 
-.commentForm{
-    width: 100%;
+.postFullDescription{
+    margin-top: 6px;
 }
 
 .postFullCommentsQuantity{
-    color: grey;
-    font-size: 18px;
+    color: black;
+    font-size: 22px;
     position: relative;
-    top: -1px;
+    top: 4px;
     margin-left: 4px;
-}
-
-.commentFormInput{
-    width: calc(100% - 80px);
-    height: 100px;
-    margin-right: 12px;
-}
-
-.commentFormButton{
-    vertical-align: top;
-    position: relative;
-    top: 32px
 }

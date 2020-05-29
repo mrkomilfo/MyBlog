@@ -8,10 +8,12 @@ import '../Common/Form.css';
 export default class PostMini extends Component {
     render() {
         const image = this.props.post.image ? 
-            <img className="postMiniImage" src={this.props.post.image} alt={`Post ${this.props.post.id} image`}/> : 
+            <Link to={`/post?id=${this.props.post.id}`}>
+                <img className="postMiniImage" src={this.props.post.image} alt={`Post ${this.props.post.id} image`}/> 
+            </Link> :
             null;
 
-        const tags = Object.keys(this.props.post.tags).map((key, index) => {
+        const tags = Object.keys(this.props.post.tags).map((key) => {
             return (
                 <Link className="postMiniTag" to={"/feed?tags=" + this.props.post.tags[key]} key={key}>#{this.props.post.tags[key]} </Link>
             );

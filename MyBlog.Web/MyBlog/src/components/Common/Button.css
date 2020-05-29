@@ -22,6 +22,13 @@
     cursor: not-allowed;
   }
 
+  .btn[disabled]:hover {
+    background-color: #FF0;
+    color: #000;
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
   .btn:focus{
     outline: none;
   }

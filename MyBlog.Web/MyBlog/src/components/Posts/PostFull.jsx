@@ -5,9 +5,9 @@ import AuthHelper from '../../Utils/authHelper.js';
 
 import Alert from '../Common/Alert';
 import Modal from '../Common/Modal';
-import Button from '../Common/Button';
 import AuthorDate from './AuthorDate';
 import Comment from './Comment';
+import CommentForm from './CommentForm';
 
 import './PostFull.css';
 import '../Common/Form.css';
@@ -36,6 +36,7 @@ export default class PostFull extends Component {
             userId: AuthHelper.getId()
         }
         this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
+        this.deletePost = this.deletePost.bind(this);
     }
 
     componentDidMount() {
@@ -52,30 +53,34 @@ export default class PostFull extends Component {
     }
 
     renderPost() {
-        const image = this.state.image ? 
-            <img className="postFullImage" src={this.state.image} alt={`Post ${this.state.id} image`}/> : 
-            null;
+        const image = this.state.image 
+            ? <img className="postFullImage" src={this.state.image} alt={`Post ${this.state.id} image`}/> 
+            : null;
 
         const editDelete = this.state.userId == this.state.authorId || this.state.userRole === 'Admin' ?
             <div className="postFullEditDelete">
-                <span className="postFullEdit">Edit</span>
+                <Link className="postFullEdit" to={`/editPost?id=${this.state.id}`}>Edit</Link>
                 |
                 <span className="postFullDelete" onClick={this.toggleDeleteModal}>Delete</span>
-            </div> :
-            null
+            </div> 
+            : null
 
         const tags = Object.keys(this.state.tags).map((key) => {
             return (
-                <Link className="postFullTag" to={"/feed?t ags=" + this.state.tags[key]} key={key}>#{this.state.tags[key]} </Link>
+                <Link className="postFullTag" to={"/feed?tags=" + this.state.tags[key]} key={key}>#{this.state.tags[key]} </Link>
             );
         });
+
+        const commentForm = this.state.userRole !== 'Guest' 
+            ? <CommentForm postId={this.state.id}/> 
+            : null
 
         const comments = this.state.comments.map((currentValue)=>{
             const canDelete = currentValue.authorId == this.state.userId 
                 || this.state.userId == this.state.authorId 
                 || this.state.userRole === 'Admin' ;
             return (
-                <Comment key={currentValue.id} authorId={currentValue.authorId} authorPhoto={currentValue.authorPhoto} 
+                <Comment key={currentValue.id} id={currentValue.id} postId={this.state.id} authorId={currentValue.authorId} authorPhoto={currentValue.authorPhoto} 
                     authorName={currentValue.authorName} publicationDate={currentValue.publicationDate} value={currentValue.value} canDelete={canDelete}/>
             );
         })
@@ -90,23 +95,20 @@ export default class PostFull extends Component {
                     <Link className="postFullCategory" to={`/feed?categoryId=${this.state.category.id}`}>{this.state.category.name}</Link>
                     <hr className="postFullHr"/>
                     {image}
-                    <p className="postFullshortDescription">{this.state.description}</p>
+                    <p className="postFullDescription">{this.state.description}</p>
                     <div className="postFullTags">{tags}</div>
                     <hr className="postFullHr"/>
                     <div className="postFullFooter">
+                        <div className="postFullFooterLeft">
+                            <img className="commentIcon" src="/icons/comment.png"/>
+                            <span className="postFullCommentsQuantity">{this.state.comments.length}</span>
+                        </div>
                         <AuthorDate authorId={this.state.authorId} authorPhoto={this.state.authorPhoto} 
                             authorName={this.state.authorName} publicationDate={this.state.publicationDate}/>
                     </div>
-                    <Modal isOpen={this.state.deleteModal} title="Confirm action" onCancel={this.toggleDeleteModal}>Are you sure you want to delete post?</Modal>
+                    <Modal isOpen={this.state.deleteModal} title="Confirm action" onSubmit={this.deletePost} onCancel={this.toggleDeleteModal}>Are you sure you want to delete post?</Modal>
                 </div>
-                <div className="form commentForm">
-                    <h2 className="commentFormHeader">Comments <span className="postFullCommentsQuantity">{this.state.comments.length}</span></h2>
-                    <hr className="commentFormHr"/>
-                    <div className="commentFormBody">
-                        <textarea className="commentFormInput" type="text" placeholder="Your comment..."/>
-                        <Button className="commentFormButton">Send</Button>
-                    </div>
-                </div>
+                {commentForm}
                 <div className="comments">
                     {comments}
                 </div>
@@ -122,7 +124,7 @@ export default class PostFull extends Component {
         </Alert> : null;
 
         const content = this.state.loading
-            ? <p><em>Loading...</em></p>
+            ? <p className="loading">Loading</p>
             : this.renderPost();
 
         return(
@@ -164,6 +166,37 @@ export default class PostFull extends Component {
             this.setState({
                 errorMessage: ex.toString()
             });
+        });
+    }
+
+    deletePost() {
+        debugger;
+        const token = AuthHelper.getToken();
+        fetch('api/Post/' + this.state.id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then((response) => {
+            if (response.ok) {
+                this.props.history.push("/feed");                   
+            } 
+            else {
+                this.setState({error: true})
+                return response.json()
+            }
+        }).then((data) => {
+            if (this.state.error)
+            {
+                this.setState({
+                    errorMessage: data.message
+                })
+            }
+        }).catch((ex) => {
+            this.setState({
+                errorMessage: ex.toString()
+            })
         });
     }
 }

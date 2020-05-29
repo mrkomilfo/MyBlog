@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyBlog.DomainLogic.Interfaces;
 using MyBlog.DomainLogic.Models.Common;
 using MyBlog.DomainLogic.Models.Post;
+using MyBlog.Web.Service;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -15,10 +16,68 @@ namespace MyBlog.Web.Controllers
     public class PostController : ExceptionController
     {
         private IPostManager _postManager;
+        private IHostServices _hostServices;
 
-        public PostController(IPostManager postManager)
+        public PostController(IPostManager postManager, IHostServices hostServices)
         {
             _postManager = postManager;
+            _hostServices = hostServices;
+        }
+
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> Create([FromForm] PostCreateDto PostCreateDto)
+        {
+            return await HandleExceptions(async () =>
+            {
+                if (ModelState.IsValid)
+                {
+                    var hostRoot = _hostServices.GetHostPath();
+                    await _postManager.AddPostAsync(PostCreateDto, hostRoot);
+                    return Ok();
+                }
+                return BadRequest("Model state is not valid");
+            });
+        }
+
+        [HttpGet("{postId}/update")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult<PostToUpdateDto>> Update(int postId)
+        {
+            return await HandleExceptions(async () =>
+            {
+                var role = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultRoleClaimType))?.Value;
+                var userId = Int32.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultNameClaimType))?.Value);
+                int authorId = await _postManager.GetPostAuthorIdAsync(postId);
+                if (role != "Admin" && userId != authorId)
+                {
+                    return Forbid("Access denied");
+                }
+                return Ok(await _postManager.GetPostToUpdateAsync(postId));
+            });
+        }
+
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> Update([FromForm] PostUpdateDto PostUpdateDto)
+        {
+            return await HandleExceptions(async () =>
+            {
+                var role = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultRoleClaimType))?.Value;
+                var userId = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultNameClaimType))?.Value;
+                var authorId = await _postManager.GetPostAuthorIdAsync(PostUpdateDto.Id);
+                if (role != "Admin" && Int32.Parse(userId) != authorId)
+                {
+                    return Forbid("Access denied");
+                }
+                if (ModelState.IsValid)
+                {
+                    var hostRoot = _hostServices.GetHostPath();
+                    await _postManager.UpdatePostAsync(PostUpdateDto, hostRoot);
+                    return Ok();
+                }
+                return BadRequest("Model state is not valid");
+            });
         }
 
         [HttpGet]
@@ -36,20 +95,22 @@ namespace MyBlog.Web.Controllers
             return await HandleExceptions(async () => Ok(await _postManager.GetPostAsync(postId)));
         }
 
-        [HttpGet("{postId}/update")]
+        [HttpDelete("{postId}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult<PostToUpdateDto>> Update(int postId)
+        public async Task<ActionResult> Delete(int postId)
         {
             return await HandleExceptions(async () =>
             {
                 var role = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultRoleClaimType))?.Value;
-                var userId = Int32.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultNameClaimType))?.Value);
-                int authorId = await _postManager.GetPostAuthorIdAsync(postId);
-                if (role != "Admin" && userId != authorId)
+                var userId = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultNameClaimType))?.Value;
+                var authorId = await _postManager.GetPostAuthorIdAsync(postId);
+                if (role != "Admin" && Int32.Parse(userId) != authorId)
                 {
                     return Forbid("Access denied");
                 }
-                return Ok(await _postManager.GetPostToUpdateAsync(postId));
+                var hostRoot = _hostServices.GetHostPath();
+                await _postManager.DeletePostAsync(postId, false, hostRoot);
+                return Ok();
             });
         }
     }

@@ -5,7 +5,8 @@ import AuthHelper from '../../Utils/authHelper.js';
 import Portal from '../Common/Portal';
 
 import './NavMenu.css'
-
+import '../Common/Form.css';
+import '../Common/Other.css';
 
 export default class NavMenu extends Component {
     static displayName = NavMenu.name;

@@ -1,12 +1,12 @@
-.signIn{
+.signUp{
     width: min(260px, 96%);
     margin: auto;
 }
 
-.signIn input{
+.signUp input{
     width: 100%;
 }
 
-.signInButton{
-    margin-top: 8px;
+.signUpButton{
+    margin-top: 12px;
 }

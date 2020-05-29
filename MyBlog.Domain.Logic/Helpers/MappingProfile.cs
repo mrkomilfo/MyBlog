@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MyBlog.Domain;
+using MyBlog.DomainLogic.Managers;
 using MyBlog.DomainLogic.Models.Post;
 using MyBlog.DomainLogic.Models.User;
 using System;
@@ -17,15 +18,24 @@ namespace MyBlog.DomainLogic.Helpers
 
             CreateMap<Comment, CommentLiteDto>()
                .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))
-               .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.ToString("d")));
+               .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.ToString(m.PublicationTime.Flexible())));
+            CreateMap<NewCommentDto, Comment>()
+               .ForMember(m => m.PublicationTime, opt => opt.MapFrom(m => DateTime.Now));
+
+            CreateMap<PostCreateDto, Post>()
+                .ForMember(m => m.HasImage, opt => opt.MapFrom(m => m.Image != null))
+                .ForMember(m => m.Tags, opt => opt.Ignore())
+                .ForMember(m => m.PublicationTime, opt => opt.MapFrom(m => DateTime.Now));
+            CreateMap<PostUpdateDto, Post>()
+                .ForMember(m => m.Tags, opt => opt.Ignore());
             CreateMap<Post, PostLiteDto>()
-                .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.ToString("d")))
+                .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.Flexible()))
                 .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))
                 .ForMember(m => m.AuthorId, opt => opt.MapFrom(m => m.Author.Id))
                 .ForMember(m => m.Tags, opt => opt.Ignore())
                 .ForMember(m => m.Comments, opt => opt.Ignore());
             CreateMap<Post, PostFullDto>()
-                .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.ToString("d")))
+                .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.Flexible()))
                 .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))
                 .ForMember(m => m.AuthorId, opt => opt.MapFrom(m => m.Author.Id))
                 .ForMember(m => m.Tags, opt => opt.Ignore());
@@ -44,6 +54,10 @@ namespace MyBlog.DomainLogic.Helpers
             CreateMap<User, UserLiteDto>()
                 .ForMember(m => m.RoleName, opt => opt.MapFrom(m => m.Role.Name))
                 .ForMember(m => m.Status, opt => opt.MapFrom(m => m.UnlockTime == null || m.UnlockTime < DateTime.Now ? null : $"Blocked until {m.UnlockTime}"));
+            CreateMap<UserUpdateDto, User>();
+            CreateMap<RegisterDto, User>()
+                .ForMember(m => m.Password, opt => opt.MapFrom(m => HashGenerator.Encrypt(m.Password)))
+                .ForMember(m => m.RegistrationDate, opt => opt.MapFrom(m => DateTime.Now));
         }
     }
 }

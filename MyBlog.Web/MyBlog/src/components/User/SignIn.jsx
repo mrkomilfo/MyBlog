@@ -3,8 +3,6 @@ import Alert from '../Common/Alert';
 import Button from '../Common/Button';
 import AuthHelper from '../../Utils/authHelper';
 
-import '../Common/Form.css';
-import '../Common/Other.css';
 import './SignIn.css';
 
 export default class SignUp extends Component {
@@ -53,7 +51,7 @@ export default class SignUp extends Component {
     }
 
     logIn() {
-        let data = {
+        const data = {
             login: this.state.login,
             password: this.state.password
         };
@@ -73,7 +71,6 @@ export default class SignUp extends Component {
                 });
             }
             else {
-                debugger;
                 AuthHelper.saveAuth(data.name, data.accessToken, data.role, data.login, data.password);
                 this.props.history.push("/feed");
             }

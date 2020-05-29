@@ -26,6 +26,59 @@ namespace MyBlog.Web.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult> Create([FromBody] RegisterDto registerDto)
+        {
+            return await HandleExceptions(async () =>
+            {
+                if (ModelState.IsValid)
+                {
+                    await _userManager.RegisterUserAsync(registerDto);
+                    return Ok();
+                }
+                return BadRequest("Model state is not valid");
+            });
+        }
+
+        [HttpGet("{userId}/update")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult<UserToUpdateDto>> Update(int userId)
+        {
+            return await HandleExceptions(async () =>
+            {
+                var role = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultRoleClaimType))?.Value;
+                var currentUserId = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultNameClaimType))?.Value;
+                if (role != "Admin" && Int32.Parse(currentUserId) != userId)
+                {
+                    return Forbid("Access denied");
+                }
+                var hostRoot = _hostServices.GetHostPath();
+                return Ok(await _userManager.GetUserToUpdateAsync(userId));
+            });
+        }
+
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> Update([FromForm] UserUpdateDto userUpdateDTO)
+        {
+            return await HandleExceptions(async () =>
+            {
+                var role = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultRoleClaimType))?.Value;
+                var userId = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultNameClaimType))?.Value;
+                if (role != "Admin" && Int32.Parse(userId) != userUpdateDTO.Id)
+                {
+                    return Forbid("Access denied");
+                }
+                if (ModelState.IsValid)
+                {
+                    var hostRoot = _hostServices.GetHostPath();
+                    await _userManager.UpdateUserAsync(userUpdateDTO, hostRoot);
+                    return Ok();
+                }
+                return BadRequest("Model state is not valid");
+            });
+        }
+
+        [HttpPost]
         [Route("signIn")]
         public async Task<ActionResult> SignIn([FromBody] LoginDto loginDto)
         {
@@ -33,7 +86,7 @@ namespace MyBlog.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    return Ok(await _userManager.Login(loginDto));
+                    return Ok(await _userManager.LoginAsync(loginDto));
                 }
                 return BadRequest("Model state is not valid");
             });
@@ -61,23 +114,6 @@ namespace MyBlog.Web.Controllers
             {
                 var hostRoot = _hostServices.GetHostPath();
                 return Ok(await _userManager.GetUserAsync(userId));
-            });
-        }
-
-        [HttpGet("{userId}/update")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult<UserToUpdateDto>> Update(int userId)
-        {
-            return await HandleExceptions(async () =>
-            {
-                var role = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultRoleClaimType))?.Value;
-                var currentUserId = Int32.Parse(User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultNameClaimType))?.Value);
-                if (role != "Admin" && currentUserId != userId)
-                {
-                    return Forbid("Access denied");
-                }
-                var hostRoot = _hostServices.GetHostPath();
-                return Ok(await _userManager.GetUserToUpdateAsync(userId));
             });
         }
 
