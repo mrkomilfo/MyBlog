@@ -1,0 +1,65 @@
+.feedList{
+    width: min(96%, 550px);
+    margin-left: auto;
+    padding: 0px;
+}
+
+.feedListItem{
+    list-style-type: none;
+}
+.feedMain{
+    width: min(96%, 550px);
+}
+
+.feed{
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    position: relative;
+    left: -8px;
+}
+
+.nothingFound{
+    width: 550px;
+    text-align: center;
+}
+
+.sideBar{
+    margin-left: 12px;
+}
+
+.filterIcon{
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.filterIcon:hover{
+    transform: scale(1.1);
+}
+
+.filterIcon:active{
+    transform: scale(0.9);
+}
+
+.collapsedFilter{
+    position: absolute;
+    top: 50px;
+    width: 100%;
+}
+
+.whiteBackground>.filter{
+    width: 100%;
+}
+
+.whiteBackground{
+    background-color: white;
+    width: min(96%, 320px);
+    
+    border-radius: 8px;
+    margin: auto;
+}
+

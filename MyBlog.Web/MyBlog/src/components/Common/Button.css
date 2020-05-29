@@ -1,0 +1,48 @@
+.btn {
+    position: relative;
+    padding: auto;
+    background-color: #FF0;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  
+  .btn:hover {
+    background-color: #BB0
+  }
+  
+  .btn[disabled] {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  .btn:focus{
+    outline: none;
+  }
+
+  .btn.secondary {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: #FFF;
+  }
+
+  .btn.secondary:hover {
+    background-color: #BBB;
+  }
+
+  .btn.danger {
+    border: none; 
+    background-color: #F00;
+    color: #FFF;
+  }
+
+  .btn.danger:hover {
+    background-color: #B00;
+  }
+
+  

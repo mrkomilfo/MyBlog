@@ -1,0 +1,14 @@
+html, body, #root {
+    height: 100%;
+    background: rgb(240, 240, 240);
+    overflow: hidden;
+    position: sticky;
+}
+ 
+main{
+    height: calc(100% - 42px);
+    background: rgb(240, 240, 240);
+    padding-top: 12px;
+    position: sticky;
+    overflow: auto;
+}
