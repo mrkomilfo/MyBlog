@@ -147,5 +147,60 @@ namespace MyBlog.Web.Controllers
         {
             return await HandleExceptions(async () => Ok(await _userManager.GetUserToChangeRoleAsync(userId)));
         }
+
+        [HttpPut]
+        [Route("changePassword")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+        {
+            return await HandleExceptions(async () =>
+            {
+                if (ModelState.IsValid)
+                {
+                    await _userManager.ChangePasswordAsync(changePasswordDto);
+                    return Ok();
+                }
+                return BadRequest("Model state is not valid");
+            });
+        }
+
+        [HttpPut]
+        [Route("ban")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Account manager")]
+        public async Task<ActionResult> Ban([FromBody] BanDto banDto)
+        {
+            return await HandleExceptions(async () =>
+            {
+                var currentRole = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultRoleClaimType))?.Value;
+                var userRole = (await _userManager.GetUserRoleAsync(banDto.Id)).ToString();
+                if (userRole == "Account manager" || userRole == currentRole)
+                {
+                    return Forbid("Lack of rights");
+                }
+                if (ModelState.IsValid)
+                {
+                    await _userManager.BanUserAsync(banDto);
+                    return Ok();
+                }
+                return BadRequest("Model state is not valid");
+            });
+        }
+
+        [HttpPut("{userId}/unban")]
+        [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Account manager")]
+        public async Task<ActionResult> Unban(int userId)
+        {
+            return await HandleExceptions(async () =>
+            {
+                var currentRole = User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimsIdentity.DefaultRoleClaimType))?.Value;
+                var userRole = (await _userManager.GetUserRoleAsync(userId)).ToString();
+                if (userRole == "Account manager" || userRole == currentRole)
+                {
+                    return Forbid("Lack of rights");
+                }
+                await _userManager.UnbanUserAsync(userId);
+                return Ok();
+            });
+        }
     }
 }

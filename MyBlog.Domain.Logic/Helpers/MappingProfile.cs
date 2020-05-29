@@ -49,7 +49,7 @@ namespace MyBlog.DomainLogic.Helpers
             CreateMap<User, UserFullDto>()
                 .ForMember(m => m.Role, opt => opt.MapFrom(m => m.Role.Name))
                 .ForMember(m => m.Status, opt => opt.MapFrom(m => m.UnlockTime == null || m.UnlockTime < DateTime.Now ? null : $"Blocked until {m.UnlockTime}"))
-                .ForMember(m => m.RegistrationDate, opt => opt.MapFrom(m => m.RegistrationDate.ToString("f")))
+                .ForMember(m => m.RegistrationDate, opt => opt.MapFrom(m => m.RegistrationDate.ToString("dd.MM.yyyy")))
                 .ForMember(m => m.WritedPosts, opt => opt.MapFrom(m => m.Posts.Count));
             CreateMap<User, UserLiteDto>()
                 .ForMember(m => m.RoleName, opt => opt.MapFrom(m => m.Role.Name))
