@@ -147,5 +147,21 @@ namespace MyBlog.Web.Controllers
         {
             return await HandleExceptions(async () => Ok(await _userManager.GetUserToChangeRoleAsync(userId)));
         }
+
+        [HttpPut]
+        [Route("changePassword")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+        {
+            return await HandleExceptions(async () =>
+            {
+                if (ModelState.IsValid)
+                {
+                    await _userManager.ChangePasswordAsync(changePasswordDto);
+                    return Ok();
+                }
+                return BadRequest("Model state is not valid");
+            });
+        }
     }
 }

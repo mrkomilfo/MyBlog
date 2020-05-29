@@ -197,5 +197,20 @@ namespace MyBlog.DomainLogic.Managers
             }
             return await _appContext.Users.Include(u => u.Role).Where(u => u.Id == userId).Select(u => u.Role).FirstOrDefaultAsync();
         }
+
+        public async Task ChangePasswordAsync(ChangePasswordDto changePasswordDto)
+        {
+            User user = await _appContext.Users.FirstOrDefaultAsync(u => u.Id == changePasswordDto.Id);
+            if (user == null)
+            {
+                throw new NullReferenceException($"User with id={user.Id} not found");
+            }
+            if (!Equals(HashGenerator.Encrypt(changePasswordDto.OldPassword), user.Password))
+            {
+                throw new ArgumentException("Wrong old password");
+            }
+            user.Password = HashGenerator.Encrypt(changePasswordDto.NewPassword);
+            await _appContext.SaveChangesAsync(default);
+        }
     }
 }
