@@ -12,9 +12,10 @@ namespace MyBlog.DomainLogic.Helpers
             .Where(t => !string.IsNullOrWhiteSpace(t))
             .Distinct();
 
-        public static string Flexible(this DateTime dateTime) => 
-            dateTime.Date == DateTime.Today 
-            ? dateTime.ToString("'Today at' HH:mm")
-            : dateTime.ToString("dd/MM/yyyy");
+        public static string Flexible(this DateTime dateTime) =>
+            /*dateTime.Date == DateTime.Today 
+            ? "Today at " + dateTime.ToString("HH:mm") 
+            : dateTime.ToString("dd/MM/yyyy");*/
+            dateTime.ToString("dd/MM/yyyy HH:mm");
     }
 }

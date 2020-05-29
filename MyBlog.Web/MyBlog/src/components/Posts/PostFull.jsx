@@ -5,9 +5,9 @@ import AuthHelper from '../../Utils/authHelper.js';
 
 import Alert from '../Common/Alert';
 import Modal from '../Common/Modal';
-import Button from '../Common/Button';
 import AuthorDate from './AuthorDate';
 import Comment from './Comment';
+import CommentForm from './CommentForm';
 
 import './PostFull.css';
 import '../Common/Form.css';
@@ -36,6 +36,7 @@ export default class PostFull extends Component {
             userId: AuthHelper.getId()
         }
         this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
+        this.deletePost = this.deletePost.bind(this);
     }
 
     componentDidMount() {
@@ -52,17 +53,17 @@ export default class PostFull extends Component {
     }
 
     renderPost() {
-        const image = this.state.image ? 
-            <img className="postFullImage" src={this.state.image} alt={`Post ${this.state.id} image`}/> : 
-            null;
+        const image = this.state.image 
+            ? <img className="postFullImage" src={this.state.image} alt={`Post ${this.state.id} image`}/> 
+            : null;
 
         const editDelete = this.state.userId == this.state.authorId || this.state.userRole === 'Admin' ?
             <div className="postFullEditDelete">
                 <Link className="postFullEdit" to={`/editPost?id=${this.state.id}`}>Edit</Link>
                 |
                 <span className="postFullDelete" onClick={this.toggleDeleteModal}>Delete</span>
-            </div> :
-            null
+            </div> 
+            : null
 
         const tags = Object.keys(this.state.tags).map((key) => {
             return (
@@ -70,22 +71,16 @@ export default class PostFull extends Component {
             );
         });
 
-        const commentForm = this.state.userRole !== 'Guest' ? 
-        <div className="form commentForm">
-            <h2 className="commentFormHeader">Left your comment</h2>
-            <hr className="commentFormHr"/>
-            <div className="commentFormBody">
-                <textarea className="commentFormInput" type="text" placeholder="Your comment..."/>
-                <Button className="commentFormButton">Send</Button>
-            </div>
-        </div> : null
+        const commentForm = this.state.userRole !== 'Guest' 
+            ? <CommentForm postId={this.state.id}/> 
+            : null
 
         const comments = this.state.comments.map((currentValue)=>{
             const canDelete = currentValue.authorId == this.state.userId 
                 || this.state.userId == this.state.authorId 
                 || this.state.userRole === 'Admin' ;
             return (
-                <Comment key={currentValue.id} authorId={currentValue.authorId} authorPhoto={currentValue.authorPhoto} 
+                <Comment key={currentValue.id} id={currentValue.id} postId={this.state.id} authorId={currentValue.authorId} authorPhoto={currentValue.authorPhoto} 
                     authorName={currentValue.authorName} publicationDate={currentValue.publicationDate} value={currentValue.value} canDelete={canDelete}/>
             );
         })
@@ -111,7 +106,7 @@ export default class PostFull extends Component {
                         <AuthorDate authorId={this.state.authorId} authorPhoto={this.state.authorPhoto} 
                             authorName={this.state.authorName} publicationDate={this.state.publicationDate}/>
                     </div>
-                    <Modal isOpen={this.state.deleteModal} title="Confirm action" onCancel={this.toggleDeleteModal}>Are you sure you want to delete post?</Modal>
+                    <Modal isOpen={this.state.deleteModal} title="Confirm action" path={`/post?id${this.state.id}`} onSubmit={this.deletePost} onCancel={this.toggleDeleteModal}>Are you sure you want to delete post?</Modal>
                 </div>
                 {commentForm}
                 <div className="comments">
@@ -171,6 +166,36 @@ export default class PostFull extends Component {
             this.setState({
                 errorMessage: ex.toString()
             });
+        });
+    }
+
+    deletePost() {
+        const token = AuthHelper.getToken();
+        fetch('api/Post/' + this.state.id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        }).then((response) => {
+            if (response.ok) {
+                this.props.history.push("/feed");                   
+            } 
+            else {
+                this.setState({error: true})
+                return response.json()
+            }
+        }).then((data) => {
+            if (this.state.error)
+            {
+                this.setState({
+                    errorMessage: data.message
+                })
+            }
+        }).catch((ex) => {
+            this.setState({
+                errorMessage: ex.toString()
+            })
         });
     }
 }

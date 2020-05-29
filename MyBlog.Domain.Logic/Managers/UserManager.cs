@@ -74,7 +74,7 @@ namespace MyBlog.DomainLogic.Managers
             var user = await _appContext.Users.Include(u => u.Role).FirstOrDefaultAsync(u => string.Equals(u.Login, login));
             if (user == null)
             {
-                throw new NullReferenceException($"User with id={user.Id} not found");
+                return null;
             }
             var passwordHash = HashGenerator.Encrypt(password);
             if (passwordHash == user.Password)

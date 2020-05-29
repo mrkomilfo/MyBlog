@@ -1,6 +1,10 @@
 .signIn{
-    width: fit-content;
+    width: min(260px, 96%);
     margin: auto;
+}
+
+.signIn input{
+    width: 100%;
 }
 
 .signInButton{

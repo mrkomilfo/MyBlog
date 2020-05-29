@@ -39,7 +39,7 @@ export default class EditPost extends Component {
             errorMessage: '',
             categories: [],
         };
-        this.handleinputChange = this.handleinputChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.validateField = this.validateField.bind(this);
         this.editPost = this.editPost.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -53,7 +53,7 @@ export default class EditPost extends Component {
         this.loadCategories();
     }
 
-    handleinputChange(event) {
+    handleInputChange(event) {
         const target = event.target;
         const name = target.name;
         const value = target.value;
@@ -177,34 +177,34 @@ export default class EditPost extends Component {
                 <div className="formContent">
                     <div className="formGroup">
                         <label>Post name</label>
-                        <input required type="text" name="name" value={this.state.name} onChange={this.handleinputChange}/>
+                        <input required type="text" name="name" value={this.state.name} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.name}</div>
                     </div>
                     <div className="formGroup"> 
                         <label>Category</label>
-                        <select name="category" value={this.state.category} onChange={this.handleinputChange}>
+                        <select name="category" value={this.state.category} onChange={this.handleInputChange}>
                             {categoriesSelect}
                         </select>
                         <div className="formFeedback">{this.state.formErrors.category}</div>
                     </div>
                     <div className="formGroup">
                         <label>Short description</label>
-                        <textarea required name="shortDescription" value={this.state.shortDescription} onChange={this.handleinputChange}/>
+                        <textarea required name="shortDescription" value={this.state.shortDescription} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.shortDescription}</div>
                     </div>
                     <div className="formGroup">
                         <label>Description</label>
-                        <textarea required name="description" value={this.state.description} onChange={this.handleinputChange}/>
+                        <textarea required name="description" value={this.state.description} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.description}</div>
                     </div>
                     <div className="formGroup">
                         <label>Tags</label>
-                        <input type="text" name="tags" value={this.state.tags} onChange={this.handleinputChange}/>
+                        <input type="text" name="tags" value={this.state.tags} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.tags}</div>
                     </div>
                     <div className="formGroup">
                         <label>Image</label>
-                        <input type="file" name="imageFile" accept=".jpg,.png,.jpeg" value={this.state.fileName} onChange={this.handleinputChange}/>
+                        <input type="file" name="imageFile" accept=".jpg,.png,.jpeg" value={this.state.fileName} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.imageFile}</div>
                         {imageBlock}
                     </div>

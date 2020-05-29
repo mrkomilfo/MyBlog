@@ -38,8 +38,7 @@
 
 .modalFooter {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    justify-content: center;
 }
 
 .modalFooter button:last-child {

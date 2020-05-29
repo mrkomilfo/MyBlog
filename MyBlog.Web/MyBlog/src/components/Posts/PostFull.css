@@ -99,10 +99,6 @@
     
 }
 
-.commentForm{
-    width: 100%;
-}
-
 .postFullDescription{
     margin-top: 6px;
 }
@@ -113,16 +109,4 @@
     position: relative;
     top: 4px;
     margin-left: 4px;
-}
-
-.commentFormInput{
-    width: calc(100% - 80px);
-    height: 100px;
-    margin-right: 12px;
-}
-
-.commentFormButton{
-    vertical-align: top;
-    position: relative;
-    top: 32px
 }
