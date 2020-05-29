@@ -45,7 +45,7 @@
   .btn.danger {
     border: none; 
     background-color: #F00;
-    color: #FFF;
+    color: #000;
   }
 
   .btn.danger:hover {

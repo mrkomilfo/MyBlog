@@ -21,6 +21,7 @@ namespace MyBlog.DomainLogic.Interfaces
         Task<IEnumerable<Role>> GetRolesAsync();
         Task<Role> GetUserRoleAsync(int userId);
         Task ChangePasswordAsync(ChangePasswordDto changePasswordDto);
-
+        Task BanUserAsync(BanDto banDTO);
+        Task UnbanUserAsync(int userId);
     }
 }

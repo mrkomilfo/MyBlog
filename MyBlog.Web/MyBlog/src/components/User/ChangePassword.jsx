@@ -101,18 +101,18 @@ export default class ChangePassword extends Component {
                 <h2>Password changing</h2>
                 <div className="formContent">
                     <div className="formGroup">
-                        <label for="oldPassword">Old password</label>
-                        <input required type="password" name="oldPassword" id="oldPassword" value={this.state.oldPassword} onChange={this.handleInputChange}/>
+                        <label>Old password</label>
+                        <input required type="password" name="oldPassword" value={this.state.oldPassword} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.oldPassword}</div>
                     </div>
                     <div className="formGroup">
-                        <label for="newPassword">New password</label>
-                        <input required type="password" name="newPassword" id="newPassword" value={this.state.newPassword} onChange={this.handleInputChange}/>
+                        <label>New password</label>
+                        <input required type="password" name="newPassword"value={this.state.newPassword} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.newPassword}</div>
                     </div>
                     <div className="formGroup">
-                        <label for="newPasswordConfirm">Confirm new password</label>
-                        <input required type="password" name="newPasswordConfirm" id="newPasswordConfirm" value={this.state.newPasswordConfirm} onChange={this.handleInputChange}/>
+                        <label>Confirm new password</label>
+                        <input required type="password" name="newPasswordConfirm" value={this.state.newPasswordConfirm} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.newPasswordConfirm}</div>
                     </div>
                     <div className="changePasswordButtonPanel">
