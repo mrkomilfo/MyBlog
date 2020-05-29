@@ -143,17 +143,17 @@ export default class EditProfile extends Component {
                 <div className="formContent">
                     <div className="formGroup">
                         <label>Username</label>
-                        <input required type="text" name="userName" value={this.state.userName} onChange={this.handleinputChange}/>
+                        <input required type="text" name="userName" value={this.state.userName} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.userName}</div>
                     </div>
                     <div className="formGroup">
                         <label>Email</label>
-                        <input type="email" name="email" value={this.state.email} onChange={this.handleinputChange}/>
+                        <input type="email" name="email" value={this.state.email} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.email}</div>
                     </div>
                     <div className="formGroup">
                         <label>Photo</label>
-                        <input type="file" name="imageFile" accept=".jpg,.png,.jpeg" value={this.state.fileName} onChange={this.handleinputChange}/>
+                        <input type="file" name="imageFile" accept=".jpg,.png,.jpeg" value={this.state.fileName} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.imageFile}</div>
                         {imageBlock}
                     </div>

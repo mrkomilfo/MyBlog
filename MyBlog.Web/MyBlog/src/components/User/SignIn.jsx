@@ -51,7 +51,7 @@ export default class SignUp extends Component {
     }
 
     logIn() {
-        let data = {
+        const data = {
             login: this.state.login,
             password: this.state.password
         };
@@ -71,7 +71,6 @@ export default class SignUp extends Component {
                 });
             }
             else {
-                debugger;
                 AuthHelper.saveAuth(data.name, data.accessToken, data.role, data.login, data.password);
                 this.props.history.push("/feed");
             }

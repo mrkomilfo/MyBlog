@@ -74,6 +74,7 @@ namespace MyBlog.Web
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<IPostManager, PostManager>();
             services.AddScoped<ICategoryManager, CategoryManager>();
+            services.AddScoped<ICommentManager, CommentManager>();
             services.AddScoped<IHostServices, HostServices>();
             services.AddSingleton<IWebHostEnvironment>(Environment);
 

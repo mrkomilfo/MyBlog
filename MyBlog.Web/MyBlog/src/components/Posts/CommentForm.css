@@ -1,0 +1,15 @@
+.commentForm{
+    width: 100%;
+}
+
+.commentFormInput{
+    width: calc(100% - 80px);
+    height: 100px;
+    margin-right: 12px;
+}
+
+.commentFormButton{
+    vertical-align: top;
+    position: relative;
+    top: 32px
+}

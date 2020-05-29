@@ -31,12 +31,12 @@ export default class SignUp extends Component {
             passwordValid: false, 
             passwordConfirmValid: false,
         };
-        this.handleinputChange = this.handleinputChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.validateField = this.validateField.bind(this);
         this.register = this.register.bind(this);
     }
 
-    handleinputChange(event) {
+    handleInputChange(event) {
         const target = event.target;
         const name = target.name;
         let value = target.value;
@@ -115,27 +115,27 @@ export default class SignUp extends Component {
                 <div className="formContent">
                     <div className="formGroup">
                         <label>Username</label>
-                        <input required type="text" name="userName" value={this.state.userName} onChange={this.handleinputChange}/>
+                        <input required type="text" name="userName" value={this.state.userName} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.name}</div>
                     </div>
                     <div className="formGroup">
                         <label>Email</label>
-                        <input type="email" name="email" value={this.state.email} onChange={this.handleinputChange}/>
+                        <input type="email" name="email" value={this.state.email} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.email}</div>
                     </div>
                     <div className="formGroup">
                         <label>Login</label>
-                        <input required type="text" name="login" value={this.state.login} onChange={this.handleinputChange}/>
+                        <input required type="text" name="login" value={this.state.login} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.login}</div>
                     </div>
                     <div className="formGroup">
                         <label>Password</label>
-                        <input required type="password" name="password" id="password" value={this.state.password} onChange={this.handleinputChange}/>
+                        <input required type="password" name="password" id="password" value={this.state.password} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.password}</div>
                     </div>
                     <div className="formGroup">
                         <label>Confirm password</label>
-                        <input required type="password" name="passwordConfirm" id="passwordConfirm" value={this.state.passwordConfirm} onChange={this.handleinputChange}/>
+                        <input required type="password" name="passwordConfirm" id="passwordConfirm" value={this.state.passwordConfirm} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.passwordConfirm}</div>
                     </div>
                     <Button className="signUpButton" disabled = {!this.state.formValid} onClick={() => this.register()}>Sign Up</Button>

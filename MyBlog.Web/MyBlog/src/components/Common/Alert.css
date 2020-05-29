@@ -4,4 +4,5 @@
     padding: 8px;
     margin: 0px auto 12px;
     max-width: 96%;
+    width: fit-content;
 }
