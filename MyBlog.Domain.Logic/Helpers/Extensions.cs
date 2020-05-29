@@ -13,9 +13,8 @@ namespace MyBlog.DomainLogic.Helpers
             .Distinct();
 
         public static string Flexible(this DateTime dateTime) =>
-            /*dateTime.Date == DateTime.Today 
-            ? "Today at " + dateTime.ToString("HH:mm") 
-            : dateTime.ToString("dd/MM/yyyy");*/
-            dateTime.ToString("dd/MM/yyyy HH:mm");
+            dateTime.Date == DateTime.Today 
+            ? @"Today at " + dateTime.ToString("HH:mm") 
+            : dateTime.ToString("dd/MM/yyyy");
     }
 }
