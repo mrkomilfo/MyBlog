@@ -34,7 +34,7 @@ namespace MyBlog.DomainLogic.Managers
 
             if (post.Image != null)
             {
-                string path = $"{hostRoot}\\wwwroot\\img\\Posts\\{newPost.Id}.jpg";
+                string path = $"{hostRoot}\\wwwroot\\img\\posts\\{newPost.Id}.jpg";
                 await using var fileStream = new FileStream(path, FileMode.Create);
                 await post.Image.CopyToAsync(fileStream);
             }
@@ -88,7 +88,7 @@ namespace MyBlog.DomainLogic.Managers
 
             if (post.Image != null)
             {
-                string path = $"{hostRoot}\\wwwroot\\img\\Posts\\{update.Id}.jpg";
+                string path = $"{hostRoot}\\wwwroot\\img\\posts\\{update.Id}.jpg";
                 await using var fileStream = new FileStream(path, FileMode.Create);
                 await post.Image.CopyToAsync(fileStream);
             }

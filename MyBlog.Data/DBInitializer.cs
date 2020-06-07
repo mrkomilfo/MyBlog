@@ -18,7 +18,8 @@ namespace MyBlog.Data
                     new Category("Other"),
                     new Category("Programming"),
                     new Category("Travelling"),
-                    new Category("Events"),                   
+                    new Category("Events"),
+                    new Category("Memes"),
                 };
                 await context.Categories.AddRangeAsync(categories);
                 await context.SaveChangesAsync(default);
