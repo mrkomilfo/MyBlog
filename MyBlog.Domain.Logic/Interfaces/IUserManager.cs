@@ -23,5 +23,6 @@ namespace MyBlog.DomainLogic.Interfaces
         Task ChangePasswordAsync(ChangePasswordDto changePasswordDto);
         Task BanUserAsync(BanDto banDTO);
         Task UnbanUserAsync(int userId);
+        Task ChangeUserRoleAsync(int userId, string roleName);
     }
 }

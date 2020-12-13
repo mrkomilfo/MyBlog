@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import queryString from 'query-string';
 import AuthHelper from '../../Utils/authHelper.js';
 import './Users.css';
 
@@ -86,23 +85,17 @@ export default class Users extends Component {
     render() {
         const filter = 
             <div class="input-group mb-3">
-                <input type="text" class="form-control" name="userName" 
+                <input type="text" className="form-control" name="userName" 
                     placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" 
                     value={this.state.userName} onChange={(e)=>this.handleInputChange(e)}/>
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" onClick={this.loadUsers}>Search</button>
+                    <button className="btn btn-outline-secondary" type="button" onClick={this.loadUsers}>Search</button>
                 </div>
             </div>
 
         const content = this.state.loading
             ? <p><em>Loading...</em></p>
             : this.renderUsersList(this.state.users);
-
-        const headerStyle = {
-            marginBottom: '8px',
-            display: 'flex',
-            justifyContent: 'space-between'
-        }
 
         return(
             <div className="usersPage">
