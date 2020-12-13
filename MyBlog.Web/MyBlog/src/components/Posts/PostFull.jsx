@@ -170,7 +170,6 @@ export default class PostFull extends Component {
     }
 
     deletePost() {
-        debugger;
         const token = AuthHelper.getToken();
         fetch('api/Post/' + this.state.id, {
             method: 'DELETE',

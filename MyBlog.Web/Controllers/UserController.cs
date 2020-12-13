@@ -94,7 +94,7 @@ namespace MyBlog.Web.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin,Account manager")]
-        public async Task<ActionResult<Page<UserLiteDto>>> Index([FromQuery] int index = 0, int pageSize = 20, string search = null)
+        public async Task<ActionResult<Page<UserLiteDto>>> Index([FromQuery] int index = 0, int pageSize = 64, string search = null)
         {
             return await HandleExceptions(async () =>
             {

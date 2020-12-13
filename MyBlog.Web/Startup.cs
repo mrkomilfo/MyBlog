@@ -18,6 +18,9 @@ using MyBlog.DomainLogic.Helpers;
 using AuthOptions = MyBlog.Web.Helpers.AuthOptions;
 using MyBlog.Web.Service;
 using Microsoft.Extensions.Azure;
+using NSwag.Generation.Processors.Security;
+using NSwag;
+using System.Linq;
 
 namespace MyBlog.Web
 {
@@ -40,6 +43,21 @@ namespace MyBlog.Web
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "MyBlog/build";
+            });
+
+            services.AddSwaggerDocument(config =>
+            {
+                config.DocumentName = "OpenAPI 2";
+                config.OperationProcessors.Add(new OperationSecurityScopeProcessor("JWT Token"));
+                config.AddSecurity("JWT Token", Enumerable.Empty<string>(),
+                    new OpenApiSecurityScheme
+                    {
+                        Type = OpenApiSecuritySchemeType.ApiKey,
+                        Name = "Authorization",
+                        In = OpenApiSecurityApiKeyLocation.Header,
+                        Description = "Copy this into the value field: Bearer {token}"
+                    }
+                );
             });
 
             services.AddAuthentication(x =>
@@ -96,7 +114,9 @@ namespace MyBlog.Web
       
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSpaStaticFiles(); 
+            app.UseSpaStaticFiles();
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseRouting();
             app.UseAuthorization();
@@ -109,6 +129,7 @@ namespace MyBlog.Web
 
             app.UseSpa(spa =>
             {
+                app.UseDeveloperExceptionPage();
                 spa.Options.SourcePath = "MyBlog";
 
                 if (env.IsDevelopment())
