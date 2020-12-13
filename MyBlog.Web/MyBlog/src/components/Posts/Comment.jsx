@@ -27,7 +27,7 @@ export default class Comment extends Component {
     }
 
     render(){
-        const deleteButton = this.props.canDelete ? <p className="deleteButton" onClick={this.toggleDeleteModal}>Delete</p> : null
+        const deleteButton = this.props.canDelete ? <p className="deleteButton" onClick={this.toggleDeleteModal}>✖</p> : null
         return(
             <div className="form comment">
                 <div className="commentHeader">
@@ -52,7 +52,7 @@ export default class Comment extends Component {
             }
         }).then((response) => {
             if (response.ok) {
-                window.location.reload(false);    
+                this.props.onDelete()    
             } 
         });
     }

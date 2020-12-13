@@ -37,6 +37,8 @@ export default class PostFull extends Component {
         }
         this.toggleDeleteModal = this.toggleDeleteModal.bind(this);
         this.deletePost = this.deletePost.bind(this);
+        this.onComment = this.onComment.bind(this);
+        this.onDeleteComment = this.onDeleteComment.bind(this);
     }
 
     componentDidMount() {
@@ -52,6 +54,14 @@ export default class PostFull extends Component {
         });
     }
 
+    async onComment(){
+        await this.loadData(this.state.id)
+    }
+
+    async onDeleteComment(commentId){
+        this.setState({comments: this.state.comments.filter(c=>c.id != commentId)})
+    }
+
     renderPost() {
         const image = this.state.image 
             ? <img className="postFullImage" src={this.state.image} alt={`Post ${this.state.id} image`}/> 
@@ -59,9 +69,8 @@ export default class PostFull extends Component {
 
         const editDelete = this.state.userId == this.state.authorId || this.state.userRole === 'Admin' ?
             <div className="postFullEditDelete">
-                <Link className="postFullEdit" to={`/editPost?id=${this.state.id}`}>Edit</Link>
-                |
-                <span className="postFullDelete" onClick={this.toggleDeleteModal}>Delete</span>
+                {this.state.userId == this.state.authorId ? <Link className="postFullEdit" to={`/editPost?id=${this.state.id}`}><span role="img" aria-label="like">✏️</span>|</Link> : null}
+                <span className="postFullDelete" onClick={this.toggleDeleteModal}>✖</span>
             </div> 
             : null
 
@@ -72,7 +81,7 @@ export default class PostFull extends Component {
         });
 
         const commentForm = this.state.userRole !== 'Guest' 
-            ? <CommentForm postId={this.state.id}/> 
+            ? <CommentForm postId={this.state.id} onComment={this.onComment}/> 
             : null
 
         const comments = this.state.comments.map((currentValue)=>{
@@ -80,7 +89,7 @@ export default class PostFull extends Component {
                 || this.state.userId == this.state.authorId 
                 || this.state.userRole === 'Admin' ;
             return (
-                <Comment key={currentValue.id} id={currentValue.id} postId={this.state.id} authorId={currentValue.authorId} authorPhoto={currentValue.authorPhoto} 
+                <Comment onDelete={()=>this.onDeleteComment(currentValue.id)} key={currentValue.id} id={currentValue.id} postId={this.state.id} authorId={currentValue.authorId} authorPhoto={currentValue.authorPhoto} 
                     authorName={currentValue.authorName} publicationDate={currentValue.publicationDate} value={currentValue.value} canDelete={canDelete}/>
             );
         })
