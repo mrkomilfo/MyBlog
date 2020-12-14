@@ -5,4 +5,5 @@
 
 .textShadow:hover{
     text-shadow: 0px 0px 1px #000000;
+    cursor: pointer;
 }

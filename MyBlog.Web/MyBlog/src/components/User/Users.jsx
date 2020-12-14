@@ -26,7 +26,7 @@ export default class Users extends Component {
         this.loadUsers();
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.state.query !== window.location.search) {
             this.setState({ query: window.location.search });
             this.loadUsers();

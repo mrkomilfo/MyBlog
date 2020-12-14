@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-
 import Button from '../Common/Button';
 
 import './Filter.css';
@@ -18,6 +16,7 @@ export default class Filter extends Component {
             to: '',
         };
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.search = this.search.bind(this);
     }
 
     componentDidMount() {
@@ -34,7 +33,7 @@ export default class Filter extends Component {
         });
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         this.setState({ 
             name: '', 
             category: 0, 
@@ -114,16 +113,21 @@ export default class Filter extends Component {
                     <input type="date" value={this.state.to} name="to" onChange={this.handleInputChange}/>
                 </div>
                 <div className="filterButtonWrapper">
-                    <Button className="filterButton" color="primary"><Link to={`/feed${this.getQuerryTrailer()}`}>Search</Link></Button>
+                    <Button className="filterButton" color="primary" onClick={this.search}>Search</Button>
                 </div>               
             </div>
         )
     }
 
+    search() {
+        const query = `/feed${this.getQuerryTrailer()}`
+        this.props.history.push(query)
+    }
+
     async loadCategories() {
         const response = await fetch('api/Category');
         const data = await response.json();
-        data.unshift({id: 0, name: 'Not selected'})
+        data.unshift({id: 0, name: '--'})
         this.setState({ categories: data });
     }
 }

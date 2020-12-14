@@ -12,12 +12,7 @@
 }
 
 .filterButton{
-    display: flex;
+    display: block;
     margin-top: 16px;
     width: 100%;
-}
-
-.filterButton a{
-    display: flex;
-    margin: auto;
 }

@@ -37,7 +37,10 @@ export default class Comment extends Component {
                 </div>
                 <hr/>
                 <p className="commentBody">{this.props.value}</p>
-                <Modal isOpen={this.state.deleteModal} title="Confirm action" path={`/post?id=${this.props.postId}`} onSubmit={this.deleteComment} onCancel={this.toggleDeleteModal}>Are you sure you want to delete comment?</Modal>
+                <Modal isOpen={this.state.deleteModal} title="Confirm action" path={`/post?id=${this.props.postId}`} 
+                    onSubmit={this.deleteComment} onCancel={this.toggleDeleteModal}>
+                        Are you sure you want to delete comment?
+                </Modal>
             </div>
         )
     }

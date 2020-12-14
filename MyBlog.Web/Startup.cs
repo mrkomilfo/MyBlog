@@ -6,11 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using MyBlog.Web.Helpers;
 using MyBlog.Data;
 using MyBlog.DomainLogic.Interfaces;
 using MyBlog.DomainLogic.Managers;
@@ -18,9 +16,6 @@ using MyBlog.DomainLogic.Helpers;
 using AuthOptions = MyBlog.Web.Helpers.AuthOptions;
 using MyBlog.Web.Service;
 using Microsoft.Extensions.Azure;
-using NSwag.Generation.Processors.Security;
-using NSwag;
-using System.Linq;
 
 namespace MyBlog.Web
 {
@@ -43,21 +38,6 @@ namespace MyBlog.Web
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "MyBlog/build";
-            });
-
-            services.AddSwaggerDocument(config =>
-            {
-                config.DocumentName = "OpenAPI 2";
-                config.OperationProcessors.Add(new OperationSecurityScopeProcessor("JWT Token"));
-                config.AddSecurity("JWT Token", Enumerable.Empty<string>(),
-                    new OpenApiSecurityScheme
-                    {
-                        Type = OpenApiSecuritySchemeType.ApiKey,
-                        Name = "Authorization",
-                        In = OpenApiSecurityApiKeyLocation.Header,
-                        Description = "Copy this into the value field: Bearer {token}"
-                    }
-                );
             });
 
             services.AddAuthentication(x =>
@@ -113,10 +93,16 @@ namespace MyBlog.Web
             app.UseAuthentication();
       
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                OnPrepareResponse = context =>
+                {
+                    context.Context.Response.Headers.Add("Cache-Control", "no-cache, no-store");
+                    context.Context.Response.Headers.Add("Expires", "-1");
+                }
+            });
             app.UseSpaStaticFiles();
             app.UseOpenApi();
-            app.UseSwaggerUi3();
 
             app.UseRouting();
             app.UseAuthorization();

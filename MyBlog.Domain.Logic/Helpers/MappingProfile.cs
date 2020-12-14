@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MyBet.DomainLogic.Models.Categories;
 using MyBlog.Domain;
 using MyBlog.DomainLogic.Managers;
 using MyBlog.DomainLogic.Models.Post;
@@ -15,6 +16,8 @@ namespace MyBlog.DomainLogic.Helpers
                 .ForMember(m => m.Name, opt => opt.MapFrom(m => m.ToLower()));
             CreateMap<Tag, string>()
                .ConvertUsing(source => source.Name ?? string.Empty);
+
+            CreateMap<CategoryCreateDto, Category>();
 
             CreateMap<Comment, CommentLiteDto>()
                .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))

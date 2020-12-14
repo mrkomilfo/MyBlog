@@ -69,7 +69,7 @@ export default class PostFull extends Component {
 
         const editDelete = this.state.userId == this.state.authorId || this.state.userRole === 'Admin' ?
             <div className="postFullEditDelete">
-                {this.state.userId == this.state.authorId ? <Link className="postFullEdit" to={`/editPost?id=${this.state.id}`}><span role="img" aria-label="like">✏️</span>|</Link> : null}
+                {this.state.userId == this.state.authorId ? <><Link className="postFullEdit" to={`/editPost?id=${this.state.id}`}><span role="img" aria-label="like">✏️</span></Link>|</> : null}
                 <span className="postFullDelete" onClick={this.toggleDeleteModal}>✖</span>
             </div> 
             : null
@@ -101,7 +101,7 @@ export default class PostFull extends Component {
                         <Link className="postFullName" to={`/post?id=${this.state.id}`}>{this.state.name}</Link>
                         {editDelete}
                     </div>
-                    <Link className="postFullCategory" to={`/feed?categoryId=${this.state.category.id}`}>{this.state.category.name}</Link>
+                    <Link className="postFullCategory" to={`/feed?categoryId=${this.state.category?.id}`}>{this.state.category?.name}</Link>
                     <hr className="postFullHr"/>
                     {image}
                     <p className="postFullDescription">{this.state.description}</p>

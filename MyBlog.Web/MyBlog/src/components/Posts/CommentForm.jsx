@@ -56,7 +56,7 @@ export default class CommentForm extends Component {
         }).then((response) => {
             if (response.ok) {
                 this.setState({comment: ''}, 
-                    this.props.onComment()
+                    ()=>this.props.onComment()
                 )
             } 
         })
