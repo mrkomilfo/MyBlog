@@ -5,13 +5,17 @@ using MyBlog.DomainLogic.Managers;
 using MyBlog.DomainLogic.Models.Post;
 using MyBlog.DomainLogic.Models.User;
 using System;
+using MyBlog.DomainLogic.Services;
 
 namespace MyBlog.DomainLogic.Helpers
 {
     public class MappingProfile : Profile
     {
-        public MappingProfile()
+        private readonly ICensor _censor;
+        public MappingProfile(ICensor censor)
         {
+            _censor = censor;
+
             CreateMap<string, Tag>()
                 .ForMember(m => m.Name, opt => opt.MapFrom(m => m.ToLower()));
             CreateMap<Tag, string>()
@@ -21,7 +25,8 @@ namespace MyBlog.DomainLogic.Helpers
 
             CreateMap<Comment, CommentLiteDto>()
                .ForMember(m => m.AuthorName, opt => opt.MapFrom(m => m.Author.UserName))
-               .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.Flexible()));
+               .ForMember(m => m.PublicationDate, opt => opt.MapFrom(m => m.PublicationTime.Flexible()))
+               .ForMember(m => m.Value, opt => opt.MapFrom(m => _censor.HandleMessage(m.Value).Result));
             CreateMap<NewCommentDto, Comment>()
                .ForMember(m => m.PublicationTime, opt => opt.MapFrom(m => DateTime.Now));
 

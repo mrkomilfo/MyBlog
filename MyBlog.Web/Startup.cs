@@ -16,6 +16,7 @@ using MyBlog.DomainLogic.Helpers;
 using AuthOptions = MyBlog.Web.Helpers.AuthOptions;
 using MyBlog.Web.Service;
 using Microsoft.Extensions.Azure;
+using MyBlog.DomainLogic.Services;
 
 namespace MyBlog.Web
 {
@@ -60,13 +61,6 @@ namespace MyBlog.Web
                 };
             });
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
-
             services.AddDbContext<IAppContext, MyAppContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IUserManager, UserManager>();
@@ -74,7 +68,14 @@ namespace MyBlog.Web
             services.AddScoped<ICategoryManager, CategoryManager>();
             services.AddScoped<ICommentManager, CommentManager>();
             services.AddScoped<IHostServices, HostServices>();
+            services.AddSingleton<ISwearingProvider, SwearingProvider>();
+            services.AddSingleton<ICensor, Censor>();
             services.AddSingleton<IWebHostEnvironment>(Environment);
+
+            services.AddSingleton(provider => new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new MappingProfile(provider.GetService<ICensor>()));
+            }).CreateMapper());
 
             services.AddAzureClients(builder =>
             {
