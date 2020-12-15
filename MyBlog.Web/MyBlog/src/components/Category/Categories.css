@@ -1,0 +1,22 @@
+.categoriesPage {
+    width: min(96%, 420px);
+    margin: 0px auto 12px;
+}
+
+.textShadow:hover{
+    text-shadow: 0px 0px 1px #000000;
+    cursor: pointer;
+}
+
+.categoriesHeader{
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+}
+
+.addCategoryButton {
+    background-color: white;
+    height: 12px;
+    padding: 0px 10px;
+    top: 8px;
+}

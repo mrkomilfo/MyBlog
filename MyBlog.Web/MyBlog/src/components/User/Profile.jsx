@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import AuthHelper from '../../Utils/authHelper.js';
 
+import Modal from '../Common/Modal';
 import Alert from '../Common/Alert';
 import Button from '../Common/Button';
 
@@ -27,9 +28,14 @@ export default class Profile extends Component {
             photo: '',
             width: 0,
             myRole: AuthHelper.getRole(),
-            myId: AuthHelper.getId()
+            myId: AuthHelper.getId(),
+
+            changeRoleModal: false,
+            newRole: '',
         }
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.toggleChangeRoleModal = this.toggleChangeRoleModal.bind(this);
+        this.changeRole = this.changeRole.bind(this);
     }
       
     componentWillUnmount() {
@@ -40,18 +46,56 @@ export default class Profile extends Component {
         this.setState({ width: window.innerWidth });
     }
 
+    isInt(value) {
+        return !isNaN(value) && 
+               parseInt(Number(value)) == value && 
+               !isNaN(parseInt(value, 10));
+      }
+
     componentDidMount() {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
     
         const parsed = queryString.parse(window.location.search);
-        if (parsed) {
+        if (parsed && this.isInt(parsed['id'])) {
             this.loadData(parsed['id']);
+        }
+        else {
+            this.props.history.push('/404')
         }
     }
 
-    renderButtonPanel() {
+    toggleChangeRoleModal(){
+        this.setState({changeRoleModal: !this.state.changeRoleModal});
+    }
 
+    handleInputChange(event) {
+        const target = event.target;
+        const name = target.name;
+        let value = target.value;
+
+        this.setState({
+          [name]: value
+        });
+    }
+
+    renderChangeRoleModal() {
+        return(
+            <Modal isOpen={this.state.changeRoleModal} title="Change role" path={`/user?id=${this.state.id}`} 
+                onSubmit={()=>this.changeRole()} onCancel={this.toggleChangeRoleModal}>
+                <div>
+                    <label>New role</label>
+                    <select className="width" name="newRole" defaultValue={this.state.role} onChange={e => this.handleInputChange(e)}>
+                        <option key="User">User</option>
+                        <option key="Admin">Admin</option>
+                        <option key="Account manager">Account manager</option>
+                    </select>
+                </div>
+            </Modal>
+        )
+    }
+
+    renderButtonPanel() {
         if (this.state.myId == this.state.id)
         {
             return(
@@ -74,7 +118,7 @@ export default class Profile extends Component {
             return(
                 <div className="profileButtonPanel">
                     <Button><Link to={`/blocking?id=${this.state.id}`}>Blocking</Link></Button>{' '}
-                    <Button><Link to={`/changeRole?id=${this.state.id}`}>Change role</Link></Button>
+                    <Button onClick={this.toggleChangeRoleModal}>Change role</Button>
                 </div>
             )
         }
@@ -102,6 +146,7 @@ export default class Profile extends Component {
             ? <p className="status">{this.state.status}</p> : null
 
         const buttonPanel = this.renderButtonPanel();
+        const changeRoleModal = this.renderChangeRoleModal();
 
         return(
             <div className={`form profile ${this.state.width <= 700 ? 'collapsed' : ''}`}>
@@ -118,6 +163,7 @@ export default class Profile extends Component {
                     </table>
                     {buttonPanel}
                 </div>
+                {changeRoleModal}
             </div>
         )
     }
@@ -170,5 +216,42 @@ export default class Profile extends Component {
                 errorMessage: ex.toString()
             });
         });
+    }
+
+    async changeRole() {
+        const data = {
+            roleName: this.state.newRole
+        }
+        const token = AuthHelper.getToken();
+        fetch(`api/User/${this.state.id}/role`,{
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(data)
+        }).then((response) => {
+            if (!response.ok)
+            {
+                this.setState({error: !response.ok});
+                return response.json();
+            }
+            else {
+                this.setState({
+                    role: this.state.newRole 
+                }, this.toggleChangeRoleModal)
+            }
+        }).then((data) => {
+            if (this.state.error){
+                this.setState({ 
+                    errorMessage: data.message 
+                });
+            }
+            
+        }).catch((ex) => {
+            this.setState({
+                errorMessage: ex.toString()
+            });
+        })
     }
 }

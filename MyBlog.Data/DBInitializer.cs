@@ -16,9 +16,10 @@ namespace MyBlog.Data
                 IEnumerable<Category> categories = new List<Category>()
                 {
                     new Category("Other"),
+                    new Category("Humor"),
                     new Category("Programming"),
                     new Category("Travelling"),
-                    new Category("Events"),                   
+                    new Category("Events")
                 };
                 await context.Categories.AddRangeAsync(categories);
                 await context.SaveChangesAsync(default);

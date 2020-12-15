@@ -63,3 +63,7 @@
 .writedPosts:hover{
     text-shadow: grey 0 0 1px;
 }
+
+.width{
+    width: 100%;
+}

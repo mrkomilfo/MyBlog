@@ -23,7 +23,7 @@ export default class PostMini extends Component {
         <div className="form postMini">
             <Link className="postMiniHeader" to={`/post?id=${this.props.post.id}`}>{this.props.post.name}</Link>
             <br/>
-            <Link className="postMiniCategory" to={`/feed?categoryId=${this.props.post.category.id}`}>{this.props.post.category.name}</Link>
+            <Link className="postMiniCategory" to={`/feed?categoryId=${this.props.post.category?.id}`}>{this.props.post.category?.name}</Link>
             <hr className="postMiniHr"/>
             {image}
             <p className="postMinishortDescription">{this.props.post.shortDescription}</p>

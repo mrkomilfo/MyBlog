@@ -36,17 +36,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\img\events\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <WCFMetadata Include="Connected Services" />
     </ItemGroup>
 
     <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="wwwroot\img\posts\**" />
+    <EmbeddedResource Remove="wwwroot\img\posts\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="wwwroot\img\posts\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 

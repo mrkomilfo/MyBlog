@@ -235,7 +235,6 @@ export default class NewPost extends Component {
 
     createPost()
     {
-        debugger;
         if (!this.state.formValid)
         {
             this.setState({

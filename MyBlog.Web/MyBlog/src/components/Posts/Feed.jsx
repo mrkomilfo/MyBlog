@@ -37,14 +37,14 @@ export default class Feed extends Component {
         document.addEventListener('mousedown', this.handleClickOutside);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (this.state.query !== window.location.search) {
             this.setState({ query: window.location.search, filterExpanded: false });
             this.loadFeed();
         }
     }
       
-    componentWillUnmount() {
+    UNSAFE_componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
@@ -98,7 +98,7 @@ export default class Feed extends Component {
         {
             const sideBar = 
                 <div className="sideBar">
-                    <Filter />
+                    <Filter history={this.props.history}/>
                 </div>
 
             return(

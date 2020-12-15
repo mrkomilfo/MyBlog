@@ -235,5 +235,21 @@ namespace MyBlog.DomainLogic.Managers
             user.UnlockTime = DateTime.Now;
             await _appContext.SaveChangesAsync(default);
         }
+
+        public async Task ChangeUserRoleAsync(int userId, string roleName)
+        {
+            var user = await _appContext.Users.FirstOrDefaultAsync(u => Equals(u.Id, userId));
+            if (user == null)
+            {
+                throw new NullReferenceException($"User with id={user.Id} not found");
+            }
+            var role = await _appContext.Roles.FirstOrDefaultAsync(r => Equals(r.Name, roleName));
+            if (role == null)
+            {
+                throw new NullReferenceException($"Role '{roleName}' not found");
+            }
+            user.RoleId = role.Id;
+            await _appContext.SaveChangesAsync(default);
+        }
     }
 }

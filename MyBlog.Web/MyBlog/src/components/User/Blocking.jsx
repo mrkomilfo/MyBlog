@@ -101,12 +101,12 @@ export default class Blocking extends Component {
                 <div className="formContent">
                     <div className="formGroup">
                         <label for="days">Number of days</label>
-                        <input invalid={!this.state.daysValid} required type="number" name="days" value={this.state.days} onChange={this.handleInputChange}/>
+                        <input required type="number" name="days" value={this.state.days} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.days}</div>
                     </div>
                     <div className="formGroup">
                         <label for="hours">Number of hours</label>
-                        <input invalid={!this.state.hoursValid} required type="number" name="hours" value={this.state.hours} onChange={this.handleInputChange}/>
+                        <input required type="number" name="hours" value={this.state.hours} onChange={this.handleInputChange}/>
                         <div className="formFeedback">{this.state.formErrors.hours}</div>
                     </div>
                     <div className="blockingButtonPanel">
@@ -203,7 +203,6 @@ export default class Blocking extends Component {
                 return response.json();
             }
         }).then((data) => {
-            debugger;
             if(this.state.error)
             {
                 this.setState({

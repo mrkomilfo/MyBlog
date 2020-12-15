@@ -27,7 +27,7 @@ export default class Comment extends Component {
     }
 
     render(){
-        const deleteButton = this.props.canDelete ? <p className="deleteButton" onClick={this.toggleDeleteModal}>Delete</p> : null
+        const deleteButton = this.props.canDelete ? <p className="deleteButton" onClick={this.toggleDeleteModal}>✖</p> : null
         return(
             <div className="form comment">
                 <div className="commentHeader">
@@ -37,7 +37,10 @@ export default class Comment extends Component {
                 </div>
                 <hr/>
                 <p className="commentBody">{this.props.value}</p>
-                <Modal isOpen={this.state.deleteModal} title="Confirm action" path={`/post?id=${this.props.postId}`} onSubmit={this.deleteComment} onCancel={this.toggleDeleteModal}>Are you sure you want to delete comment?</Modal>
+                <Modal isOpen={this.state.deleteModal} title="Confirm action" path={`/post?id=${this.props.postId}`} 
+                    onSubmit={this.deleteComment} onCancel={this.toggleDeleteModal}>
+                        Are you sure you want to delete comment?
+                </Modal>
             </div>
         )
     }
@@ -52,7 +55,7 @@ export default class Comment extends Component {
             }
         }).then((response) => {
             if (response.ok) {
-                window.location.reload(false);    
+                this.props.onDelete()    
             } 
         });
     }
