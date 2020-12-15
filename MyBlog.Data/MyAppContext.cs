@@ -44,74 +44,57 @@ namespace MyBlog.Data
 
             builder.Entity<User>()
                 .HasKey(u => u.Id);
-
             builder.Entity<User>()
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
-
             builder.Entity<User>()
                 .HasMany(u => u.Posts)
                 .WithOne(p => p.Author)
                 .OnDelete(DeleteBehavior.SetNull);
-
             builder.Entity<User>()
                 .HasMany(u => u.Comments)
                 .WithOne(c => c.Author)
                 .OnDelete(DeleteBehavior.SetNull);
-
             builder.Entity<User>()
                 .HasQueryFilter(u => !u.IsDeleted);
 
-
             builder.Entity<Role>()
                 .HasKey(r => r.Id);
-
             builder.Entity<Role>()
                 .Property(r => r.Id)
                 .ValueGeneratedOnAdd();
 
-
             builder.Entity<Post>()
                 .HasKey(e => e.Id);
-
             builder.Entity<Post>()
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
             builder.Entity<Post>()
                 .HasQueryFilter(e => !e.IsDeleted);
-
             builder.Entity<Post>()
                .HasMany(p => p.Comments)
                .WithOne(c => c.Post)
                .OnDelete(DeleteBehavior.SetNull);
 
-
             builder.Entity<Category>()
                 .HasKey(c => c.Id);
-
             builder.Entity<Category>()
                 .Property(c => c.Id)
                 .ValueGeneratedOnAdd();
-
             builder.Entity<Category>()
                 .HasQueryFilter(c => !c.IsDeleted);
 
-
             builder.Entity<Tag>()
                 .HasKey(t => t.Id);
-
             builder.Entity<Tag>()
                 .Property(t => t.Id)
                 .ValueGeneratedOnAdd();
 
-
             builder.Entity<Comment>()
                 .HasKey(c => c.Id);
-
             builder.Entity<Comment>()
                 .Property(c => c.Id)
                 .ValueGeneratedOnAdd();
-
             builder.Entity<Comment>()
                 .HasQueryFilter(c => !c.IsDeleted);
         }
